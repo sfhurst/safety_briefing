@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Safety Briefing</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 1rem;
+        background: #f4f4f4;
+      }
+      .section {
+        background: white;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      label {
+        display: block;
+        margin: 0.5rem 0 0.2rem;
+        font-weight: bold;
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      .checkbox-group label {
+        display: block;
+        font-weight: normal;
+      }
+      button {
+        padding: 0.7rem 1.5rem;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="job-safety-form">
+      <div class="section">
+        <h2>Job Safety Briefing</h2>
+        <p>
+          This form is required for all routine inspection work. Routine inspections are conducted on foot from the shoulder of the highway and
+          underneath the bridge. Work vehicles should have their strobe lights activated and be positioned to alert approaching drivers of the
+          inspector's presence. The required personal protective equipment (PPE) for routine inspections includes Class 3 safety apparel, work boots,
+          and an INDOT-issued hardhat. Routine inspections should only be performed under weather conditions that allow for adequate visibility. Heavy
+          rain and dense fog should be avoided to ensure safety. For any inspection work requiring access equipment and/or traffic control, a separate
+          Job Hazard Analysis must be completed.
+        </p>
+      </div>
+
+      <div class="section">
+        <h3>Employee Information</h3>
+        <label for="employee-name">Employee Name:</label>
+        <input type="text" id="employee-name" name="employee-name" />
+
+        <label for="work-assignment">Work Assignment:</label>
+        <input type="text" id="work-assignment" name="work-assignment" />
+
+        <label for="safety-contact">Safety Contact:</label>
+        <input type="text" id="safety-contact" name="safety-contact" />
+      </div>
+
+      <div class="section">
+        <h3>Work Details</h3>
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" />
+
+        <label for="start-time">Start Time (Hour):</label>
+        <select id="start-time" name="start-time">
+          <option value="">Select hour</option>
+          <script>
+            for (let i = 0; i < 24; i++) {
+              document.write(`<option value="${i}:00">${i}:00</option>`);
+            }
+          </script>
+        </select>
+
+        <label for="duration">Duration (Hours):</label>
+        <select id="duration" name="duration">
+          <option value="">Select duration</option>
+          <script>
+            for (let i = 1; i <= 12; i++) {
+              document.write(`<option value="${i}">${i} hour(s)</option>`);
+            }
+          </script>
+        </select>
+
+        <label for="district">District:</label>
+        <select id="district" name="district">
+          <option value="">Select district</option>
+          <option value="Crawfordsville">Crawfordsville</option>
+          <option value="Fort Wayne">Fort Wayne</option>
+          <option value="Greenfield">Greenfield</option>
+          <option value="LaPorte">LaPorte</option>
+          <option value="Seymour">Seymour</option>
+          <option value="Vincennes">Vincennes</option>
+        </select>
+
+        <label for="location">Route:</label>
+        <input type="text" id="location" name="location" />
+
+        <label for="speed">Speed Limit:</label>
+        <select name="speed-limit">
+          <option value="<30">&lt;30 mph</option>
+          <option value="30-55">30–55 mph</option>
+          <option value="55-70">55–70 mph</option>
+          <option value=">70">&gt;70 mph</option>
+        </select>
+      </div>
+
+      <div class="section">
+        <h3>Additional Notes</h3>
+        <textarea rows="4" name="notes"></textarea>
+      </div>
+    </div>
+
+    <button onclick="generatePDF()">Download PDF</button>
+
+    <script>
+      function generatePDF() {
+        const element = document.getElementById("job-safety-form");
+        html2pdf().from(element).save("job-safety-briefing.pdf");
+      }
+    </script>
+  </body>
+</html>
