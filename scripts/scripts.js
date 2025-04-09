@@ -48,7 +48,7 @@ function generatePDF() {
   document.getElementById("date").value ||= new Date().toISOString().split("T")[0];
   document.getElementById("start-time").value ||= "9:00";
   document.getElementById("speed-limit").value ||= "30-55";
-  document.getElementById("duration").value ||= "4"; // Default value
+  document.getElementById("duration").value ||= "4";
   document.getElementById("district").value ||= "Crawfordsville";
 
   const form = document.getElementById("job-safety-form");
@@ -61,47 +61,51 @@ function generatePDF() {
     div.style.marginBottom = "0.5rem";
     div.style.fontSize = "16px";
 
-    // Find the original field by ID and get its value
-    const originalField = document.getElementById(field.id); // Get the original field by ID
-
+    const originalField = document.getElementById(field.id);
     if (originalField) {
       if (field.tagName === "SELECT") {
-        const selectedValue = originalField.value; // Use the value directly from the original field
+        const selectedValue = originalField.value;
         const selectedOption = field.querySelector(`option[value="${selectedValue}"]`);
-        div.textContent = selectedOption ? selectedOption.textContent : ""; // Use the option text for the selected value
+        div.textContent = selectedOption ? selectedOption.textContent : "";
       } else if (field.type === "date") {
         const iso = originalField.value;
         const parts = iso.split("-");
         div.textContent = parts.length === 3 ? `${parts[1]}/${parts[2]}/${parts[0]}` : "";
       } else {
-        div.textContent = originalField.value || ""; // For inputs and textareas, grab the value from the original field
+        div.textContent = originalField.value || "";
       }
 
-      // Replace the input/select/textarea field with its visible text
       field.replaceWith(div);
     } else {
       console.error(`Original field with ID ${field.id} not found.`);
     }
   });
 
-  // Optional styling to increase font size
+  // Style the clone specifically for PDF rendering
   clone.style.fontSize = "16px";
   clone.style.padding = "2rem";
+  clone.style.maxWidth = "8in"; // Lock width for PDF output
+  clone.style.width = "100%";
+  clone.style.boxSizing = "border-box";
 
-  // Open the PDF in a new tab
-  // Adjusting the PDF output settings
+  // Insert page break before "Additional Comments"
+  const commentsSection = clone.querySelector("#additional-comments")?.closest(".form-section");
+  if (commentsSection) {
+    commentsSection.style.pageBreakBefore = "always";
+    commentsSection.style.marginTop = "1in";
+  }
+
+  // Open PDF in new tab
   html2pdf()
     .set({
-      margin: [0.2, 0.25, 0.2, 0.25], // Top, Right, Bottom, Left margins
-      filename: "job-safety-briefing.pdf",
+      margin: [0.2, 0.25, 0.2, 0.25],
+      filename: "Job Safety Briefing.pdf",
       image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
+      html2canvas: { scale: 2, useCORS: true, windowWidth: 850 }, // Standardize width
       jsPDF: {
-        unit: "in", // Use inches for units
-        format: "letter", // Use letter size (8.5x11 inches), or 'a4' for A4 size
-        orientation: "portrait", // or 'landscape'
-        font: "helvetica", // Change to preferred font
-        fontSize: 12, // Control the font size for PDF
+        unit: "in",
+        format: "letter",
+        orientation: "portrait",
       },
     })
     .from(clone)
