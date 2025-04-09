@@ -11,6 +11,10 @@
         padding: 1rem;
         background: #f4f4f4;
       }
+      h2,
+      h3 {
+        margin: 20px 0 10px 0;
+      }
       .section {
         background: white;
         padding: 1rem;
@@ -18,19 +22,32 @@
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
-      label {
+      .input-group {
+        margin-bottom: 0.5rem;
+      }
+      .input-group label {
         display: block;
-        margin: 0.5rem 0 0.2rem;
+        margin-bottom: 0.2rem;
         font-weight: bold;
       }
       input,
       select,
       textarea {
-        width: 100%;
+        width: calc(100% - 20px);
         padding: 0.5rem;
         margin-bottom: 0.5rem;
         border: 1px solid #ccc;
         border-radius: 4px;
+        font-size: 16px;
+      }
+      textarea {
+        font-family: sans-serif;
+      }
+      select:focus,
+      input:focus,
+      textarea:focus {
+        border-color: #007bff;
+        outline: none;
       }
       .checkbox-group label {
         display: block;
@@ -47,12 +64,40 @@
       button:hover {
         background: #0056b3;
       }
+      .employee-section,
+      .work-details-section,
+      .additional_comments-section {
+        border: 1px solid #ccc;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+      }
+      .employee-section {
+        margin-bottom: 0.5rem;
+      }
+      .work-details-section {
+        margin-bottom: 1.5rem;
+      }
+      /* Remove extra space between sections */
+      .section {
+        margin-bottom: 0.5rem;
+      }
+      /* Page break for additional comments */
+      .comments-section {
+        page-break-before: always;
+      }
+      .top-margin {
+        padding: 16px;
+      }
+      p {
+        margin: 0;
+      }
     </style>
   </head>
   <body>
     <div id="job-safety-form">
-      <div class="section">
-        <h2>Job Safety Briefing</h2>
+      <h2>Job Safety Briefing</h2>
+      <div class="section employee-section">
         <p>
           This form is required for all routine inspection work. Routine inspections are conducted on foot from the shoulder of the highway and
           underneath the bridge. Work vehicles should have their strobe lights activated and be positioned to alert approaching drivers of the
@@ -63,79 +108,206 @@
         </p>
       </div>
 
-      <div class="section">
-        <h3>Employee Information</h3>
-        <label for="employee-name">Employee Name:</label>
-        <input type="text" id="employee-name" name="employee-name" />
+      <h3>Employee Information</h3>
+      <div class="section employee-section">
+        <div class="input-group">
+          <label for="employee-name">Employee Name:</label>
+          <input type="text" id="employee-name" name="employee-name" />
+        </div>
 
-        <label for="work-assignment">Work Assignment:</label>
-        <input type="text" id="work-assignment" name="work-assignment" />
+        <div class="input-group">
+          <label for="work-assignment">Work Assignment:</label>
+          <input list="work-assignment-options" id="work-assignment" name="work-assignment" />
+          <datalist id="work-assignment-options">
+            <option value="Routine Bridge Inspections"></option>
+            <option value="Large Culvert Inspections"></option>
+          </datalist>
+        </div>
 
-        <label for="safety-contact">Safety Contact:</label>
-        <input type="text" id="safety-contact" name="safety-contact" />
+        <div class="input-group">
+          <label for="safety-contact">Safety Contact:</label>
+          <input type="text" id="safety-contact" name="safety-contact" />
+        </div>
       </div>
 
-      <div class="section">
-        <h3>Work Details</h3>
-        <label for="date">Date:</label>
-        <input type="date" id="date" name="date" />
+      <h3>Work Details</h3>
+      <div class="section work-details-section">
+        <div class="input-group">
+          <label for="date">Date:</label>
+          <input type="date" id="date" name="date" />
+        </div>
 
-        <label for="start-time">Start Time (Hour):</label>
-        <select id="start-time" name="start-time">
-          <option value="">Select hour</option>
-          <script>
-            for (let i = 0; i < 24; i++) {
-              document.write(`<option value="${i}:00">${i}:00</option>`);
-            }
-          </script>
-        </select>
+        <div class="input-group">
+          <label for="start-time">Start Time (Hour):</label>
+          <select id="start-time" name="start-time">
+            <option value="">Select hour</option>
+            <script>
+              for (let i = 0; i < 24; i++) {
+                document.write(`<option value="${i}:00">${i}:00</option>`);
+              }
+            </script>
+          </select>
+        </div>
 
-        <label for="duration">Duration (Hours):</label>
-        <select id="duration" name="duration">
-          <option value="">Select duration</option>
-          <script>
-            for (let i = 1; i <= 12; i++) {
-              document.write(`<option value="${i}">${i} hour(s)</option>`);
-            }
-          </script>
-        </select>
+        <div class="input-group">
+          <label for="duration">Duration (Hours):</label>
+          <select id="duration" name="duration">
+            <option value="">Select duration</option>
+            <script>
+              for (let i = 1; i <= 12; i++) {
+                document.write(`<option value="${i}">${i} hour(s)</option>`);
+              }
+            </script>
+          </select>
+        </div>
 
-        <label for="district">District:</label>
-        <select id="district" name="district">
-          <option value="">Select district</option>
-          <option value="Crawfordsville">Crawfordsville</option>
-          <option value="Fort Wayne">Fort Wayne</option>
-          <option value="Greenfield">Greenfield</option>
-          <option value="LaPorte">LaPorte</option>
-          <option value="Seymour">Seymour</option>
-          <option value="Vincennes">Vincennes</option>
-        </select>
+        <div class="input-group">
+          <label for="district">District:</label>
+          <select id="district" name="district">
+            <option value="">Select district</option>
+            <option value="Crawfordsville">Crawfordsville</option>
+            <option value="Fort Wayne">Fort Wayne</option>
+            <option value="Greenfield">Greenfield</option>
+            <option value="LaPorte">LaPorte</option>
+            <option value="Seymour">Seymour</option>
+            <option value="Vincennes">Vincennes</option>
+          </select>
+        </div>
 
-        <label for="location">Route:</label>
-        <input type="text" id="location" name="location" />
+        <div class="input-group">
+          <label for="location">Route:</label>
+          <input type="text" id="location" name="location" />
+        </div>
 
-        <label for="speed">Speed Limit:</label>
-        <select name="speed-limit">
-          <option value="<30">&lt;30 mph</option>
-          <option value="30-55">30–55 mph</option>
-          <option value="55-70">55–70 mph</option>
-          <option value=">70">&gt;70 mph</option>
-        </select>
+        <div class="input-group">
+          <label for="speed-limit">Speed Limit:</label>
+          <select id="speed-limit" name="speed-limit">
+            <option value="<30">&lt;30 mph</option>
+            <option value="30-55">30–55 mph</option>
+            <option value="55-70">55–70 mph</option>
+            <option value=">70">&gt;70 mph</option>
+          </select>
+        </div>
       </div>
 
-      <div class="section">
-        <h3>Additional Notes</h3>
-        <textarea rows="4" name="notes"></textarea>
-      </div>
+      <div class="comments-section"></div>
+      <h3>Additional Notes</h3>
+
+      <textarea class="top-margin" rows="4" name="notes"></textarea>
     </div>
 
     <button onclick="generatePDF()">Download PDF</button>
 
     <script>
-      function generatePDF() {
-        const element = document.getElementById("job-safety-form");
-        html2pdf().from(element).save("job-safety-briefing.pdf");
+      // Function to set default values
+      function setDefaults() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = ("0" + (today.getMonth() + 1)).slice(-2);
+        const day = ("0" + today.getDate()).slice(-2);
+        const formattedDate = `${year}-${month}-${day}`;
+
+        document.getElementById("date").value = formattedDate;
+        document.getElementById("start-time").value = "9:00";
+        document.getElementById("speed-limit").value = "30-55";
+
+        // Restore specific values from localStorage
+        const fields = ["employee-name", "work-assignment", "safety-contact", "start-time", "district", "speed-limit"];
+        fields.forEach((fieldId) => {
+          const saved = localStorage.getItem(fieldId);
+          if (saved !== null) {
+            const element = document.getElementById(fieldId);
+            if (element) element.value = saved;
+          }
+        });
       }
+
+      // Save form data to local storage
+      function saveToLocalStorage() {
+        const fields = ["employee-name", "work-assignment", "safety-contact", "start-time", "district", "speed-limit"];
+        fields.forEach((fieldId) => {
+          const element = document.getElementById(fieldId);
+          if (element) localStorage.setItem(fieldId, element.value);
+        });
+      }
+
+      // Save data on any input change for specified fields
+      window.onload = () => {
+        setDefaults();
+
+        const fieldsToWatch = ["employee-name", "work-assignment", "safety-contact", "start-time", "district", "speed-limit"];
+        fieldsToWatch.forEach((fieldId) => {
+          const element = document.getElementById(fieldId);
+          if (element) {
+            element.addEventListener("input", saveToLocalStorage);
+          }
+        });
+      };
+    </script>
+
+    <script>
+      function generatePDF() {
+        // Force default values
+        document.getElementById("date").value ||= new Date().toISOString().split("T")[0];
+        document.getElementById("start-time").value ||= "9:00";
+        document.getElementById("speed-limit").value ||= "30-55";
+        document.getElementById("duration").value ||= "4"; // Default value
+        document.getElementById("district").value ||= "Crawfordsville";
+
+        const form = document.getElementById("job-safety-form");
+        const clone = form.cloneNode(true);
+
+        // Loop through each input/select/textarea field
+        const fields = clone.querySelectorAll("input, select, textarea");
+        fields.forEach((field) => {
+          const div = document.createElement("div");
+          div.style.marginBottom = "0.5rem";
+          div.style.fontSize = "16px";
+
+          // Find the original field by ID and get its value
+          const originalField = document.getElementById(field.id); // Get the original field by ID
+
+          if (originalField) {
+            if (field.tagName === "SELECT") {
+              const selectedValue = originalField.value; // Use the value directly from the original field
+              const selectedOption = field.querySelector(`option[value="${selectedValue}"]`);
+              div.textContent = selectedOption ? selectedOption.textContent : ""; // Use the option text for the selected value
+            } else if (field.type === "date") {
+              const iso = originalField.value;
+              const parts = iso.split("-");
+              div.textContent = parts.length === 3 ? `${parts[1]}/${parts[2]}/${parts[0]}` : "";
+            } else {
+              div.textContent = originalField.value || ""; // For inputs and textareas, grab the value from the original field
+            }
+
+            // Replace the input/select/textarea field with its visible text
+            field.replaceWith(div);
+          } else {
+            console.error(`Original field with ID ${field.id} not found.`);
+          }
+        });
+
+        // Optional styling to increase font size
+        clone.style.fontSize = "16px";
+        clone.style.padding = "2rem";
+
+        // Generate the PDF
+        html2pdf()
+          .set({
+            margin: 0.5,
+            filename: "job-safety-briefing.pdf",
+            image: { type: "jpeg", quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+          })
+          .from(clone)
+          .save();
+      }
+
+      document.querySelector("textarea").addEventListener("input", function () {
+        this.style.height = "auto"; // Reset height to auto
+        this.style.height = this.scrollHeight + "px"; // Adjust height to fit content
+      });
     </script>
   </body>
 </html>
