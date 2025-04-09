@@ -92,18 +92,10 @@
       p {
         margin: 0;
       }
-      .print-area {
-        width: 100%;
-        max-width: 7.5in; /* about Letter width minus margins */
-        box-sizing: border-box;
-        padding: 0.5in;
-        overflow-wrap: break-word;
-        word-break: break-word;
-      }
     </style>
   </head>
   <body>
-    <div id="job-safety-form" class="print-area">
+    <div id="job-safety-form">
       <h2>Job Safety Briefing</h2>
       <div class="section employee-section">
         <p>
@@ -298,21 +290,18 @@
         // Optional styling to increase font size
         clone.style.fontSize = "16px";
         clone.style.padding = "2rem";
-        clone.style.maxWidth = "8.5in"; // Limit width to US Letter size
-        clone.style.width = "100%";
 
-        // html2pdf options
-        const opt = {
-          margin: 0.5,
-          filename: "job-safety-briefing.pdf",
-          image: { type: "jpeg", quality: 0.98 },
-          html2canvas: { scale: 2 },
-          jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
-          pagebreak: { mode: ["avoid-all", "css", "legacy"] },
-        };
-
-        // Generate the PDF with cloned content and the provided options
-        html2pdf().set(opt).from(clone).save();
+        // Generate the PDF
+        html2pdf()
+          .set({
+            margin: 0.5,
+            filename: "job-safety-briefing.pdf",
+            image: { type: "jpeg", quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+          })
+          .from(clone)
+          .save();
       }
 
       document.querySelectorAll("textarea").forEach((textarea) => {
