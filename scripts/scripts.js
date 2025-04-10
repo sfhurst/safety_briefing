@@ -60,24 +60,9 @@ function generatePDF() {
   fields.forEach((field) => {
     const div = document.createElement("div"); // Create a div to hold the field's value for PDF rendering
 
-    if (field.tagName === "TEXTAREA") {
-      // Special styling just for textareas
-      div.style.marginBottom = "0.5rem"; // Style the div with some margin
-      div.style.fontSize = "16px";
-      div.style.padding = "0.5rem";
-      div.style.border = "1px solid #ccc";
-      div.style.borderRadius = "4px";
-      div.style.backgroundColor = "white";
-      div.style.color = "black";
-      div.style.whiteSpace = "pre-wrap";
-      div.style.wordWrap = "break-word";
-      div.style.minHeight = "4rem";
-      div.style.boxSizing = "border-box";
-    } else {
-      // Leave other inputs/selects unstyled — use your CSS or existing layout
-      div.style.marginBottom = "0.5rem"; // Style the div with some margin
-      div.style.fontSize = "16px"; // Set font size to 16px for readability in the PDF
-    }
+    // Leave other inputs/selects unstyled — use your CSS or existing layout
+    div.style.marginBottom = "0.5rem"; // Style the div with some margin
+    div.style.fontSize = "16px"; // Set font size to 16px for readability in the PDF
 
     // Get the original field in the form to access its value
     const originalField = document.getElementById(field.id);

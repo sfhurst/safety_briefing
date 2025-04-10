@@ -3,10 +3,12 @@ body {
   padding: 1rem;
   background: #f4f4f4;
 }
+
 h2,
 h3 {
   margin: 20px 0 10px 0;
 }
+
 .section {
   background: white;
   padding: 1rem;
@@ -14,17 +16,21 @@ h3 {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 .dropdown-width-adjuster {
   width: calc(100% - 5px);
 }
+
 .input-group {
   margin-bottom: 0.5rem;
 }
+
 .input-group label {
   display: block;
   margin-bottom: 0.2rem;
   font-weight: bold;
 }
+
 input,
 select {
   width: calc(100% - 20px);
@@ -34,6 +40,14 @@ select {
   border-radius: 4px;
   font-size: 16px;
 }
+
+input[type="date"] {
+  font-family: inherit; /* Inherit the font family from parent elements */
+  font-size: inherit; /* Ensure the font size matches */
+  font-weight: inherit; /* Inherit the font weight if needed */
+  color: inherit; /* Ensure the color matches */
+}
+
 textarea {
   width: calc(100% - 30px);
   padding: 0.5rem;
@@ -43,16 +57,18 @@ textarea {
   font-size: 16px;
   font-family: sans-serif;
 }
+
 select:focus,
-input:focus,
-textarea:focus {
+input:focus {
   border-color: #007bff;
   outline: none;
 }
+
 .checkbox-group label {
   display: block;
   font-weight: normal;
 }
+
 button {
   padding: 0.7rem 1.5rem;
   background: #007bff;
@@ -61,9 +77,11 @@ button {
   border-radius: 4px;
   cursor: pointer;
 }
+
 button:hover {
   background: #0056b3;
 }
+
 .employee-section,
 .work-details-section,
 .additional_comments-section {
@@ -72,27 +90,43 @@ button:hover {
   border-radius: 4px;
   margin-bottom: 1rem;
 }
+
 .employee-section {
   margin-bottom: 0.5rem;
 }
+
 .work-details-section {
   margin-bottom: 1.5rem;
 }
+
 /* Remove extra space between sections */
 .section {
   margin-bottom: 0.5rem;
 }
-/* Page break for additional comments */
-/* .comments-section {
-  page-break-before: always;
-} */
-.top-margin {
-  padding: 16px;
-}
+
 p {
   margin: 0;
 }
+
 .no-break {
   page-break-inside: avoid;
   break-inside: avoid;
+  margin-top: 2rem;
+}
+
+.fancy-input {
+  border: 1px solid #ccc;
+  background: white;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  min-height: 3rem;
+  font-family: inherit;
+  font-size: 16px;
+  border-radius: 4px;
+  white-space: pre-wrap;
+}
+
+.fancy-input:focus {
+  border-color: #007bff;
+  outline: none;
 }
