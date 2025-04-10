@@ -39,92 +39,90 @@
         </p>
       </div>
 
-      <h3>Employee Information</h3>
-      <div class="section employee-section">
-        <div class="input-group">
-          <label for="employee-name">Employee Name:</label>
-          <input type="text" id="employee-name" name="employee-name" />
-        </div>
-
-        <div class="input-group">
-          <label for="work-assignment">Work Assignment:</label>
-          <input list="work-assignment-options" id="work-assignment" name="work-assignment" />
-          <datalist id="work-assignment-options">
-            <option value="Routine Bridge Inspections"></option>
-            <option value="Large Culvert Inspections"></option>
-          </datalist>
-        </div>
-
-        <div class="input-group">
-          <label for="safety-contact">Safety Contact:</label>
-          <input type="text" id="safety-contact" name="safety-contact" />
-        </div>
-      </div>
-
-      <h3>Work Details</h3>
-      <div class="section work-details-section">
-        <div class="input-group">
-          <label for="date">Date:</label>
-          <input type="date" id="date" name="date" />
-        </div>
-
-        <div class="input-group">
-          <label for="start-time">Start Time (Hour):</label>
-          <select class="dropdown-width-adjuster" id="start-time" name="start-time">
-            <option value="">Select hour</option>
-            <script>
-              for (let i = 0; i < 24; i++) {
-                document.write(`<option value="${i}:00">${i}:00</option>`);
-              }
-            </script>
-          </select>
-        </div>
-
-        <div class="input-group">
-          <label for="duration">Duration (Hours):</label>
-          <select class="dropdown-width-adjuster" id="duration" name="duration">
-            <option value="">Select duration</option>
-            <script>
-              for (let i = 1; i <= 12; i++) {
-                document.write(`<option value="${i}">${i} hour(s)</option>`);
-              }
-            </script>
-          </select>
-        </div>
-
-        <div class="input-group">
-          <label for="district">District:</label>
-          <select class="dropdown-width-adjuster" id="district" name="district">
-            <option value="">Select district</option>
-            <option value="Crawfordsville">Crawfordsville</option>
-            <option value="Fort Wayne">Fort Wayne</option>
-            <option value="Greenfield">Greenfield</option>
-            <option value="LaPorte">LaPorte</option>
-            <option value="Seymour">Seymour</option>
-            <option value="Vincennes">Vincennes</option>
-          </select>
-        </div>
-
-        <div class="input-group">
-          <label for="location">Route:</label>
-          <input type="text" id="location" name="location" />
-        </div>
-
-        <div class="input-group">
-          <label for="speed-limit">Speed Limit:</label>
-          <select class="dropdown-width-adjuster" id="speed-limit" name="speed-limit">
-            <option value="<30">&lt;30 mph</option>
-            <option value="30-55">30–55 mph</option>
-            <option value="55-70">55–70 mph</option>
-            <option value=">70">&gt;70 mph</option>
-          </select>
+      <div class="no-break">
+        <h3>Employee Information</h3>
+        <div class="section employee-section">
+          <div class="input-group">
+            <label for="employee-name">Employee Name:</label>
+            <input type="text" id="employee-name" name="employee-name" />
+          </div>
+          <div class="input-group">
+            <label for="work-assignment">Work Assignment:</label>
+            <input list="work-assignment-options" id="work-assignment" name="work-assignment" />
+            <datalist id="work-assignment-options">
+              <option value="Routine Bridge Inspections"></option>
+              <option value="Large Culvert Inspections"></option>
+            </datalist>
+          </div>
+          <div class="input-group">
+            <label for="safety-contact">Safety Contact:</label>
+            <input type="text" id="safety-contact" name="safety-contact" />
+          </div>
         </div>
       </div>
 
-      <div class="comments-section"></div>
-      <h3>Additional Notes</h3>
+      <div class="no-break">
+        <h3>Work Details</h3>
+        <div class="section work-details-section">
+          <div class="input-group">
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" />
+          </div>
+          <div class="input-group">
+            <label for="start-time">Start Time (Hour):</label>
+            <select class="dropdown-width-adjuster" id="start-time" name="start-time">
+              <option value="">Select hour</option>
+              <script>
+                for (let i = 0; i < 24; i++) {
+                  document.write(`<option value="${i}:00">${i}:00</option>`);
+                }
+              </script>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="duration">Duration (Hours):</label>
+            <select class="dropdown-width-adjuster" id="duration" name="duration">
+              <option value="">Select duration</option>
+              <script>
+                for (let i = 1; i <= 12; i++) {
+                  document.write(`<option value="${i}">${i} hour(s)</option>`);
+                }
+              </script>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="district">District:</label>
+            <select class="dropdown-width-adjuster" id="district" name="district">
+              <option value="">Select district</option>
+              <option value="Crawfordsville">Crawfordsville</option>
+              <option value="Fort Wayne">Fort Wayne</option>
+              <option value="Greenfield">Greenfield</option>
+              <option value="LaPorte">LaPorte</option>
+              <option value="Seymour">Seymour</option>
+              <option value="Vincennes">Vincennes</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="location">Route:</label>
+            <input type="text" id="location" name="location" />
+          </div>
+          <div class="input-group">
+            <label for="speed-limit">Speed Limit:</label>
+            <select class="dropdown-width-adjuster" id="speed-limit" name="speed-limit">
+              <option value="<30">&lt;30 mph</option>
+              <option value="30-55">30-55 mph</option>
+              <option value="55-70">55-70 mph</option>
+              <option value=">70">&gt;70 mph</option>
+            </select>
+          </div>
+        </div>
+      </div>
 
-      <textarea class="top-margin" rows="4" name="notes"></textarea>
+      <div class="no-break">
+        <div class="comments-section"></div>
+        <h3>Additional Notes</h3>
+        <textarea class="top-margin" rows="4" name="notes"></textarea>
+      </div>
     </div>
 
     <button onclick="generatePDF()">Open PDF</button>

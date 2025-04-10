@@ -83,12 +83,16 @@ button:hover {
   margin-bottom: 0.5rem;
 }
 /* Page break for additional comments */
-.comments-section {
+/* .comments-section {
   page-break-before: always;
-}
+} */
 .top-margin {
   padding: 16px;
 }
 p {
   margin: 0;
+}
+.no-break {
+  page-break-inside: avoid;
+  break-inside: avoid;
 }
