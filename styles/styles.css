@@ -32,24 +32,30 @@ h3 {
 }
 
 input,
-select,
-.fancy-input {
-  width: calc(100% - 20px); /* Ensure full width minus padding */
+select {
+  width: calc(100% - 20px);
   padding: 0.5rem;
   margin-bottom: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
-  font-family: inherit; /* Ensure all form elements inherit font family */
-  font-size: 16px; /* Consistent font size for all fields */
-  font-weight: inherit;
-  color: inherit;
+  font-size: 16px;
 }
 
 input[type="date"] {
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  color: inherit;
+  font-family: inherit; /* Inherit the font family from parent elements */
+  font-size: inherit; /* Ensure the font size matches */
+  font-weight: inherit; /* Inherit the font weight if needed */
+  color: inherit; /* Ensure the color matches */
+}
+
+textarea {
+  width: calc(100% - 30px);
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  font-family: sans-serif;
 }
 
 select:focus,
@@ -93,6 +99,7 @@ button:hover {
   margin-bottom: 1.5rem;
 }
 
+/* Remove extra space between sections */
 .section {
   margin-bottom: 0.5rem;
 }
@@ -108,7 +115,14 @@ p {
 }
 
 .fancy-input {
+  border: 1px solid #ccc;
+  background: white;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
   min-height: 3rem;
+  font-family: inherit;
+  font-size: 16px;
+  border-radius: 4px;
   white-space: pre-wrap;
 }
 
