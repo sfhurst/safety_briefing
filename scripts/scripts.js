@@ -55,8 +55,8 @@ function generatePDF() {
   const form = document.getElementById("job-safety-form");
   const clone = form.cloneNode(true); // Create a deep copy of the form
 
-  // Loop through each input, select, and div#editable field inside the cloned form
-  const fields = clone.querySelectorAll("input, select, div#editable"); // Replace textarea with div#editable
+  // Loop through each input, select, and textarea field inside the cloned form
+  const fields = clone.querySelectorAll("input, select, textarea");
   fields.forEach((field) => {
     const div = document.createElement("div"); // Create a div to hold the field's value for PDF rendering
 
@@ -64,27 +64,11 @@ function generatePDF() {
     div.style.marginBottom = "0.5rem"; // Style the div with some margin
     div.style.fontSize = "16px"; // Set font size to 16px for readability in the PDF
 
-    if (field.id === "editable") {
-      div.style.border = "1px solid #ccc"; // Add border to div#editable
-      div.style.padding = "0.5rem"; // Add padding for a better appearance
-      div.style.boxSizing = "border-box"; // Ensure padding is included in the element's width/height
-      div.style.minHeight = "96px"; // Set a minimum height of 4 rows (assuming each row is ~24px)
-      div.style.lineHeight = "1.5"; // Set the line height for readability
-      div.style.fontSize = "16px"; // Ensure the font size is the same as the rest of the form
-      div.style.whiteSpace = "pre-wrap"; // Allow the div to respect line breaks and wrap text
-      div.style.overflowY = "auto"; // Enable scrolling if content exceeds the minimum height
-      div.style.wordWrap = "break-word"; // Ensure long words break and wrap properly
-    }
-
     // Get the original field in the form to access its value
     const originalField = document.getElementById(field.id);
     if (originalField) {
-      // Handle special case for editable div (e.g. #editable) separately
-      if (field.id === "editable") {
-        div.textContent = originalField.innerText || originalField.innerHTML; // Get content from the editable div
-      }
       // Check if the field is a select dropdown and handle it accordingly
-      else if (field.tagName === "SELECT") {
+      if (field.tagName === "SELECT") {
         const selectedValue = originalField.value; // Get the selected value of the dropdown
         const selectedOption = field.querySelector(`option[value="${selectedValue}"]`); // Find the option that matches the selected value
         div.textContent = selectedOption ? selectedOption.textContent : ""; // Set the div text to the option's text content
@@ -145,9 +129,8 @@ function generatePDF() {
     });
 }
 
-// Remove the previous code related to textareas since it's no longer used
-document.querySelectorAll("div#editable").forEach((editableDiv) => {
-  editableDiv.addEventListener("input", function () {
+document.querySelectorAll("textarea").forEach((textarea) => {
+  textarea.addEventListener("input", function () {
     this.style.height = "auto";
     this.style.height = this.scrollHeight + "px";
   });
