@@ -71,7 +71,7 @@ function generatePDF() {
       div.style.boxSizing = "border-box"; // Ensure padding is included in the element's width/height
       div.style.minHeight = "96px"; // Set a minimum height of 4 rows (assuming each row is ~24px)
       div.style.lineHeight = "1.5"; // Set the line height for readability
-      div.style.fontSize = "16px"; // Ensure the font size is the same as the rest of the form
+      // div.style.fontSize = "16px"; // Ensure the font size is the same as the rest of the form
       div.style.whiteSpace = "pre-wrap"; // Allow the div to respect line breaks and wrap text
       div.style.overflowY = "auto"; // Enable scrolling if content exceeds the minimum height
       div.style.wordWrap = "break-word"; // Ensure long words break and wrap properly
