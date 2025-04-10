@@ -32,8 +32,7 @@ h3 {
 }
 
 input,
-select,
-.fancy-input {
+select {
   width: calc(100% - 20px); /* Ensure full width minus padding */
   padding: 0.5rem;
   margin-bottom: 0.5rem;
@@ -43,6 +42,34 @@ select,
   font-size: 16px; /* Consistent font size for all fields */
   font-weight: inherit;
   color: inherit;
+  background: white;
+}
+
+.fancy-input {
+  width: calc(100% - 20px); /* Ensure full width minus padding */
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: inherit;
+  color: inherit;
+  min-height: 3rem; /* Keeps the height consistent */
+  max-height: 6rem; /* Prevents excessive height if content grows */
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-y: auto; /* Allows scrolling if content exceeds max height */
+}
+
+.fancy-input:empty {
+  min-height: 3rem;
+  background: white;
+}
+
+.fancy-input:focus {
+  border-color: #007bff;
+  outline: none;
 }
 
 input[type="date"] {
