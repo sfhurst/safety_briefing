@@ -111,7 +111,7 @@ p {
 .no-break {
   page-break-inside: avoid;
   break-inside: avoid;
-  margin-top: 2rem;
+  margin-top: 2rem !important;
 }
 
 .fancy-input {
