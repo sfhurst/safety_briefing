@@ -109,13 +109,9 @@ p {
 }
 
 .no-break {
-  page-break-inside: avoid !important;
-  break-inside: avoid !important;
-  margin-top: 2rem !important;
-}
-
-#job-safety-form {
-  margin-top: 0 !important;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  margin-top: 2rem;
 }
 
 .fancy-input {
