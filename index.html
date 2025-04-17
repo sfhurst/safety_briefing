@@ -103,8 +103,69 @@
       </div>
 
       <div class="no-break">
-        <h3>Additional Notes</h3>
-        <div id="editable" contenteditable="true" class="fancy-input"></div>
+        <h3>Conditions</h3>
+        <div class="section conditions-section">
+          <div class="input-group">
+            <label for="weather">Weather:</label>
+            <select class="dropdown-width-adjuster" id="weather" name="weather">
+              <option value="">Select weather</option>
+              <option value="Sunny">Sunny</option>
+              <option value="Cloudy">Cloudy</option>
+              <option value="Partially Cloudy">Partially Cloudy</option>
+              <option value="Light Rain">Light Rain</option>
+              <option value="Light Snow">Light Snow</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="temperature">Temperature (°F):</label>
+            <select class="dropdown-width-adjuster" id="temperature" name="temperature">
+              <option value="">Select temperature</option>
+              <option value="20-30">20-30</option>
+              <option value="30-40">30-40</option>
+              <option value="40-50">40-50</option>
+              <option value="50-60">50-60</option>
+              <option value="60-70">60-70</option>
+              <option value="70-80">70-80</option>
+              <option value="80-90">80-90</option>
+              <option value="90-100">90-100</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="surface">Surface Condition:</label>
+            <select class="dropdown-width-adjuster" id="surface" name="surface">
+              <option value="">Select surface</option>
+              <option value="Dry">Dry</option>
+              <option value="Wet">Wet</option>
+              <option value="Snow Covered">Snow Covered</option>
+              <option value="Icy">Icy</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="traffic">Traffic Conditions:</label>
+            <select class="dropdown-width-adjuster" id="traffic" name="traffic">
+              <option value="">Select traffic</option>
+              <option value="Light">Light (Rural)</option>
+              <option value="Moderate">Moderate (Urban)</option>
+              <option value="Heavy">Heavy (Interstate)</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="seasonal-hazards">Seasonal Hazards:</label>
+            <select class="dropdown-width-adjuster" id="seasonal-hazards" name="seasonal-hazards">
+              <option value="">Select Seasonal Hazard</option>
+              <option value="Heat / Dehydration / Sun Exposure">Heat / Dehydration / Sun Exposure</option>
+              <option value="Insects / Ticks / Snakes">Insects / Ticks / Snakes</option>
+              <option value="Allergies / Pollen / Dust">Allergies / Pollen / Dust</option>
+              <option value="Cold / Frostbite / Hypothermia">Cold / Frostbite / Hypothermia</option>
+              <option value="Ice / Snow / Slippery Surfaces">Ice / Snow / Slippery Surfaces</option>
+              <option value="Wet Leaves / Fall Debris">Wet Leaves / Fall Debris</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="additional-notes">Additional Notes:</label>
+            <input type="text" id="additional-notes" name="additional-notes" maxlength="60" />
+          </div>
+        </div>
       </div>
     </div>
 

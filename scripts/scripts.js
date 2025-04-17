@@ -128,7 +128,22 @@ function setDefaultStartTime() {
 
 function generatePDF() {
   // Check if required fields are filled (excluding additional comments)
-  const requiredFields = ["employee-name", "work-assignment", "safety-contact", "date", "start-time", "duration", "district", "route", "speed-limit"];
+  const requiredFields = [
+    "employee-name",
+    "work-assignment",
+    "safety-contact",
+    "date",
+    "start-time",
+    "duration",
+    "district",
+    "route",
+    "speed-limit",
+    "weather",
+    "temperature",
+    "surface",
+    "traffic",
+    "seasonal-hazards",
+  ];
   const missingFields = requiredFields.filter((fieldId) => !document.getElementById(fieldId).value);
 
   if (missingFields.length > 0) {
@@ -142,6 +157,12 @@ function generatePDF() {
     });
     alert(`Please fill in the following fields: ${missingFieldNames.join(", ")}`);
     return; // Prevent PDF generation if fields are missing
+  }
+
+  // Set default value for additional notes if blank
+  const additionalNotes = document.getElementById("additional-notes");
+  if (additionalNotes && additionalNotes.value.trim() === "") {
+    additionalNotes.value = "No comments.";
   }
 
   // Clone the form to avoid altering the original
@@ -171,24 +192,6 @@ function generatePDF() {
         const iso = originalField.value; // Get the ISO date format from the original field
         const parts = iso.split("-"); // Split the date into its components (year, month, day)
         div.textContent = parts.length === 3 ? `${parts[1]}/${parts[2]}/${parts[0]}` : ""; // Format the date as MM/DD/YYYY
-      }
-      // Handle contenteditable divs specifically for PDF generation on iPhone
-      else if (field.hasAttribute("contenteditable")) {
-        let content = originalField.innerText || "";
-
-        const div = document.createElement("div");
-        div.textContent = content;
-
-        div.style.border = "1px solid #ccc";
-        div.style.padding = "4px";
-        div.style.fontSize = "16px";
-        div.style.lineHeight = "1.4";
-        div.style.whiteSpace = "pre-wrap"; // handles spacing + line breaks safely
-        div.style.wordBreak = "break-word";
-        div.style.width = "100%";
-
-        // Don't set minHeight or innerHTML or any <br> tags
-        field.replaceWith(div);
       }
 
       // Handle other field types (inputs, textareas)
