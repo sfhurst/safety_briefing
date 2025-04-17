@@ -174,22 +174,21 @@ function generatePDF() {
       }
       // Handle contenteditable divs specifically for PDF generation on iPhone
       else if (field.hasAttribute("contenteditable")) {
-        let content = originalField.innerText || ""; // Get the text content of the editable div
+        let content = originalField.innerText || "";
 
-        // Normalize double line breaks by replacing consecutive newlines with <br><br> (for PDFs)
-        content = content.replace(/\n\n+/g, "<br><br>"); // Ensure double line breaks are properly handled
+        const div = document.createElement("div");
+        div.textContent = content;
 
-        div.innerHTML = content; // Use innerHTML to correctly render line breaks as HTML elements
+        div.style.border = "1px solid #ccc";
+        div.style.padding = "4px";
+        div.style.fontSize = "16px";
+        div.style.lineHeight = "1.4";
+        div.style.whiteSpace = "pre-wrap"; // handles spacing + line breaks safely
+        div.style.wordBreak = "break-word";
+        div.style.width = "100%";
 
-        // Apply styling that works well on the iPhone PDF
-        div.style.border = "1px solid #ccc"; // Add a light gray border to match other fields
-        div.style.padding = "5px"; // Add padding inside the div for consistent spacing
-        div.style.borderRadius = "4px"; // Optional: round the corners for consistency
-        div.style.lineHeight = "1.4"; // Ensure line height is readable
-        div.style.whiteSpace = "normal"; // Let text wrap naturally
-        div.style.wordWrap = "break-word"; // Ensure long words break properly without overflowing
-        div.style.overflowWrap = "break-word"; // Handle long words better, specifically for mobile
-        div.style.minHeight = "5em";
+        // Don't set minHeight or innerHTML or any <br> tags
+        field.replaceWith(div);
       }
 
       // Handle other field types (inputs, textareas)
