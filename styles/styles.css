@@ -92,12 +92,15 @@ button:disabled {
 
 .employee-section,
 .work-details-section,
-.additional_comments-section,
 .conditions-section {
   border: 1px solid #ccc;
   padding: 16px; /* 1rem = 16px */
   border-radius: 4px;
   margin-bottom: 16px; /* 1rem = 16px */
+}
+
+.conditions-section {
+  margin-bottom: 0;
 }
 
 .employee-section {
