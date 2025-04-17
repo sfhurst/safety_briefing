@@ -172,7 +172,7 @@ function generatePDF() {
     const clone = form.cloneNode(true);
 
     // ... continue your generatePDF logic here ...
-  }, 2000); // 200ms is usually enough; tweak if needed
+  }, 10000); // 200ms is usually enough; tweak if needed
 
   // Clone the form to avoid altering the original
   const form = document.getElementById("job-safety-form");
