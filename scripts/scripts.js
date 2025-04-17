@@ -126,6 +126,19 @@ function setDefaultStartTime() {
   startTimeSelect.value = optionExists ? timeString : "9:00 AM";
 }
 
+// Prevent the button press if keyboard is up.
+document.getElementById("generate-btn").addEventListener("click", () => {
+  const activeEl = document.activeElement;
+  const isKeyboardOpen = activeEl && (activeEl.tagName === "INPUT" || activeEl.tagName === "TEXTAREA" || activeEl.isContentEditable);
+
+  if (isKeyboardOpen) {
+    alert("Close the keyboard before generating the PDF.");
+    return;
+  }
+
+  generatePDF(); // Or whatever your PDF function is
+});
+
 function generatePDF() {
   // Check if required fields are filled (excluding additional comments)
   const requiredFields = [
