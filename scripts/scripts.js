@@ -26,6 +26,36 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  let typingTimer;
+  const doneTypingInterval = 4000; // 4 seconds
+  const inputs = document.querySelectorAll("input, [contenteditable]");
+  const button = document.getElementById("generate-pdf");
+
+  inputs.forEach((el) => {
+    el.addEventListener("focus", () => {
+      button.disabled = true;
+      clearTimeout(typingTimer);
+      typingTimer = setTimeout(() => {
+        el.blur(); // Close keyboard
+        button.disabled = false;
+      }, doneTypingInterval);
+    });
+
+    el.addEventListener("keydown", () => {
+      clearTimeout(typingTimer);
+    });
+
+    el.addEventListener("keyup", () => {
+      clearTimeout(typingTimer);
+      typingTimer = setTimeout(() => {
+        el.blur();
+        button.disabled = false;
+      }, doneTypingInterval);
+    });
+  });
+});
+
 // Function to set default values
 function setDefaults() {
   const today = new Date();
@@ -125,19 +155,6 @@ function setDefaultStartTime() {
   // Set the time to the closest valid option, or default to 9:00 AM if not found
   startTimeSelect.value = optionExists ? timeString : "9:00 AM";
 }
-
-// Prevent the button press if keyboard is up.
-document.getElementById("generate-btn").addEventListener("click", () => {
-  const activeEl = document.activeElement;
-  const isKeyboardOpen = activeEl && (activeEl.tagName === "INPUT" || activeEl.tagName === "TEXTAREA" || activeEl.isContentEditable);
-
-  if (isKeyboardOpen) {
-    alert("Close the keyboard before generating the PDF.");
-    return;
-  }
-
-  generatePDF(); // Or whatever your PDF function is
-});
 
 function generatePDF() {
   // Check if required fields are filled (excluding additional comments)
