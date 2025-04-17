@@ -162,7 +162,7 @@ function generatePDF() {
   // Set default value for additional notes if blank
   const additionalNotes = document.getElementById("additional-notes");
   if (additionalNotes && additionalNotes.value.trim() === "") {
-    additionalNotes.value = "No comments.";
+    additionalNotes.value = "No notes.";
   }
 
   // Clone the form to avoid altering the original
