@@ -167,83 +167,82 @@ function generatePDF() {
 
   // Close the iPhone keyboard if it is open
   document.activeElement.blur(); // Kills keyboard if it's up
-  setTimeout(() => {
-    // Clone the form to avoid altering the original
-    const form = document.getElementById("job-safety-form");
-    const clone = form.cloneNode(true); // Create a deep copy of the form
 
-    // Loop through each input, select, and textarea field inside the cloned form
-    const fields = clone.querySelectorAll("input, select, [contenteditable='true']");
-    fields.forEach((field) => {
-      const div = document.createElement("div"); // Create a div to hold the field's value for PDF rendering
+  // Clone the form to avoid altering the original
+  const form = document.getElementById("job-safety-form");
+  const clone = form.cloneNode(true); // Create a deep copy of the form
 
-      // Apply the same styling to the div
-      div.style.marginBottom = "0.5rem"; // Style the div with some margin
-      div.style.fontSize = "16px"; // Set font size to 16px for readability in the PDF
+  // Loop through each input, select, and textarea field inside the cloned form
+  const fields = clone.querySelectorAll("input, select, [contenteditable='true']");
+  fields.forEach((field) => {
+    const div = document.createElement("div"); // Create a div to hold the field's value for PDF rendering
 
-      // Get the original field in the form to access its value
-      const originalField = document.getElementById(field.id);
-      if (originalField) {
-        // Handle 'select' dropdowns
-        if (field.tagName === "SELECT") {
-          const selectedValue = originalField.value; // Get the selected value of the dropdown
-          const selectedOption = [...field.options].find((o) => o.value.trim() === selectedValue.trim()); // Find the option that matches the selected value
-          div.textContent = selectedOption ? selectedOption.textContent : ""; // Set the div text to the option's text content
-        }
-        // Handle 'date' input fields
-        else if (field.type === "date") {
-          const iso = originalField.value; // Get the ISO date format from the original field
-          const parts = iso.split("-"); // Split the date into its components (year, month, day)
-          div.textContent = parts.length === 3 ? `${parts[1]}/${parts[2]}/${parts[0]}` : ""; // Format the date as MM/DD/YYYY
-        }
+    // Apply the same styling to the div
+    div.style.marginBottom = "0.5rem"; // Style the div with some margin
+    div.style.fontSize = "16px"; // Set font size to 16px for readability in the PDF
 
-        // Handle other field types (inputs, textareas)
-        else {
-          div.textContent = originalField.value || ""; // Use the field value or an empty string if it's empty
-        }
-
-        field.replaceWith(div); // Replace the original form field with the new div containing the value
-      } else {
-        // Log an error if the original field is not found in the form
-        console.error(`Original field with ID ${field.id} not found.`);
+    // Get the original field in the form to access its value
+    const originalField = document.getElementById(field.id);
+    if (originalField) {
+      // Handle 'select' dropdowns
+      if (field.tagName === "SELECT") {
+        const selectedValue = originalField.value; // Get the selected value of the dropdown
+        const selectedOption = [...field.options].find((o) => o.value.trim() === selectedValue.trim()); // Find the option that matches the selected value
+        div.textContent = selectedOption ? selectedOption.textContent : ""; // Set the div text to the option's text content
       }
-    });
+      // Handle 'date' input fields
+      else if (field.type === "date") {
+        const iso = originalField.value; // Get the ISO date format from the original field
+        const parts = iso.split("-"); // Split the date into its components (year, month, day)
+        div.textContent = parts.length === 3 ? `${parts[1]}/${parts[2]}/${parts[0]}` : ""; // Format the date as MM/DD/YYYY
+      }
 
-    // Style the cloned form to ensure it renders nicely in the PDF
-    clone.style.fontSize = "16px"; // Set font size for the entire form
-    clone.style.padding = "2rem"; // Add padding around the form for better readability
-    clone.style.maxWidth = "8in"; // Set a max width of 8 inches (standard letter size) for PDF output
-    clone.style.width = "100%"; // Ensure the form spans the full width within the max width
-    clone.style.boxSizing = "border-box"; // Ensure padding is included in the width calculation
+      // Handle other field types (inputs, textareas)
+      else {
+        div.textContent = originalField.value || ""; // Use the field value or an empty string if it's empty
+      }
 
-    // Insert a page break before the "Additional Comments" section (if it exists)
-    const commentsSection = clone.querySelector("#additional-comments")?.closest(".form-section");
-    if (commentsSection) {
-      commentsSection.style.pageBreakBefore = "always"; // Force a page break before this section
-      commentsSection.style.marginTop = "1in"; // Add some margin on top for spacing
+      field.replaceWith(div); // Replace the original form field with the new div containing the value
+    } else {
+      // Log an error if the original field is not found in the form
+      console.error(`Original field with ID ${field.id} not found.`);
     }
+  });
 
-    // Use html2pdf to generate and open the PDF
-    html2pdf()
-      .set({
-        margin: [0.2, 0.25, 0.2, 0.25], // Set margins for the PDF (top, right, bottom, left)
-        filename: "Job Safety Briefing.pdf", // Set the default filename for the PDF
-        image: { type: "jpeg", quality: 0.98 }, // Set image quality and format
-        html2canvas: {
-          scale: 2, // Increase scale for better image quality
-          useCORS: true, // Enable CORS to allow loading images from different origins
-          windowWidth: 850, // Limit the width of the rendered page (this ensures the PDF doesn't get too wide)
-        },
-        jsPDF: {
-          unit: "in", // Set the unit of measurement to inches
-          format: "letter", // Set the PDF format to letter size
-          orientation: "portrait", // Set the orientation to portrait (vertical)
-        },
-      })
-      .from(clone) // Use the cloned form to generate the PDF
-      .output("bloburl") // Output the PDF as a blob URL (used to open in a new window)
-      .then((url) => {
-        window.open(url, "_blank"); // Open the PDF in a new tab
-      });
-  }, 200); // 200ms is usually enough; tweak if needed
+  // Style the cloned form to ensure it renders nicely in the PDF
+  clone.style.fontSize = "16px"; // Set font size for the entire form
+  clone.style.padding = "2rem"; // Add padding around the form for better readability
+  clone.style.maxWidth = "8in"; // Set a max width of 8 inches (standard letter size) for PDF output
+  clone.style.width = "100%"; // Ensure the form spans the full width within the max width
+  clone.style.boxSizing = "border-box"; // Ensure padding is included in the width calculation
+
+  // Insert a page break before the "Additional Comments" section (if it exists)
+  const commentsSection = clone.querySelector("#additional-comments")?.closest(".form-section");
+  if (commentsSection) {
+    commentsSection.style.pageBreakBefore = "always"; // Force a page break before this section
+    commentsSection.style.marginTop = "1in"; // Add some margin on top for spacing
+  }
+
+  // Use html2pdf to generate and open the PDF
+  html2pdf()
+    .set({
+      margin: [0.2, 0.25, 0.2, 0.25], // Set margins for the PDF (top, right, bottom, left)
+      filename: "Job Safety Briefing.pdf", // Set the default filename for the PDF
+      image: { type: "jpeg", quality: 0.98 }, // Set image quality and format
+      html2canvas: {
+        scale: 2, // Increase scale for better image quality
+        useCORS: true, // Enable CORS to allow loading images from different origins
+        windowWidth: 850, // Limit the width of the rendered page (this ensures the PDF doesn't get too wide)
+      },
+      jsPDF: {
+        unit: "in", // Set the unit of measurement to inches
+        format: "letter", // Set the PDF format to letter size
+        orientation: "portrait", // Set the orientation to portrait (vertical)
+      },
+    })
+    .from(clone) // Use the cloned form to generate the PDF
+    .output("bloburl") // Output the PDF as a blob URL (used to open in a new window)
+    .then((url) => {
+      window.open(url, "_blank"); // Open the PDF in a new tab
+    });
 }
