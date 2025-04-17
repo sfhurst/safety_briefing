@@ -1,12 +1,13 @@
 body {
   font-family: sans-serif;
-  padding: 16px; /* 1rem = 16px */
+  padding: 0 16px; /* 1rem = 16px */
+  margin-top: 0;
   background: #f4f4f4;
 }
 
 h2,
 h3 {
-  margin: 20px 0 10px 0;
+  margin: 10px 0 5px 0;
 }
 
 .section {
@@ -46,16 +47,6 @@ input[type="date"] {
   font-size: inherit;
   font-weight: inherit;
   color: inherit;
-}
-
-textarea {
-  width: calc(100% - 30px);
-  padding: 8px; /* 0.5rem = 8px */
-  margin-bottom: 8px; /* 0.5rem = 8px */
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  font-family: sans-serif;
 }
 
 select:focus,
@@ -123,21 +114,4 @@ p {
   page-break-inside: avoid;
   break-inside: avoid;
   margin-top: 32px; /* 2rem = 32px */
-}
-
-.fancy-input {
-  border: 1px solid #ccc;
-  background: white;
-  padding: 8px; /* 0.5rem = 8px */
-  margin-bottom: 16px; /* 1rem = 16px */
-  min-height: 48px; /* 3rem = 48px */
-  font-family: inherit;
-  font-size: 16px;
-  border-radius: 4px;
-  white-space: pre-wrap;
-}
-
-.fancy-input:focus {
-  border-color: #007bff;
-  outline: none;
 }

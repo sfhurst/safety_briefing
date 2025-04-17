@@ -241,7 +241,7 @@ function generatePDF() {
 
   // Style the cloned form to ensure it renders nicely in the PDF
   clone.style.fontSize = "16px"; // Set font size for the entire form
-  clone.style.padding = "2rem"; // Add padding around the form for better readability
+  clone.style.padding = "0"; // Add padding around the form for better readability
   clone.style.maxWidth = "8in"; // Set a max width of 8 inches (standard letter size) for PDF output
   clone.style.width = "100%"; // Ensure the form spans the full width within the max width
   clone.style.boxSizing = "border-box"; // Ensure padding is included in the width calculation
@@ -264,7 +264,7 @@ function generatePDF() {
   // Use html2pdf to generate and open the PDF
   html2pdf()
     .set({
-      margin: [0.2, 0.25, 0.2, 0.25], // Set margins for the PDF (top, right, bottom, left)
+      margin: [0.75, 0.5, 0.5, 0.5], // Set margins for the PDF (top, right, bottom, left)
       filename: "Job Safety Briefing.pdf", // Set the default filename for the PDF
       image: { type: "jpeg", quality: 0.98 }, // Set image quality and format
       html2canvas: {
