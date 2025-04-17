@@ -76,10 +76,18 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition for background */
 }
 
 button:hover {
   background: #0056b3;
+}
+
+button:disabled {
+  background: #a3a2a2; /* Light grey background when disabled */
+  color: #535252; /* Light grey text */
+  cursor: not-allowed; /* Indicate the button is not clickable */
+  opacity: 0.6; /* Make it slightly transparent */
 }
 
 .employee-section,
