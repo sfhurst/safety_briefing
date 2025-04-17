@@ -1,85 +1,198 @@
-// Function to set default values
-function setDefaults() {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = ("0" + (today.getMonth() + 1)).slice(-2);
-  const day = ("0" + today.getDate()).slice(-2);
-  const formattedDate = `${year}-${month}-${day}`;
-
-  document.getElementById("date").value = formattedDate;
-  document.getElementById("start-time").value = "9:00";
-  document.getElementById("speed-limit").value = "30-55";
-
-  // Restore specific values from localStorage
-  const fields = ["employee-name", "work-assignment", "safety-contact", "district"];
-  fields.forEach((fieldId) => {
-    const saved = localStorage.getItem(fieldId);
-    if (saved !== null) {
-      const element = document.getElementById(fieldId);
-      if (element) element.value = saved;
+document.addEventListener("DOMContentLoaded", function () {
+  // Populate duration dropdown
+  const durationSelect = document.getElementById("duration");
+  if (durationSelect) {
+    for (let i = 1; i <= 12; i++) {
+      const option = document.createElement("option");
+      option.value = i;
+      option.textContent = `${i} hour(s)`;
+      durationSelect.appendChild(option);
     }
-  });
-}
+  }
 
-// Save form data to local storage
-function saveToLocalStorage() {
-  const fields = ["employee-name", "work-assignment", "safety-contact", "district"];
-  fields.forEach((fieldId) => {
-    const element = document.getElementById(fieldId);
-    if (element) localStorage.setItem(fieldId, element.value);
-  });
-}
-
-// Save data on any input change for specified fields
-window.onload = () => {
+  // Set defaults for the form fields
   setDefaults();
 
-  const fieldsToWatch = ["employee-name", "work-assignment", "safety-contact", "start-time", "district", "speed-limit"];
+  populateStartTimeOptions();
+  setDefaultStartTime();
+
+  // Watch specific fields for changes and save to localStorage
+  const fieldsToWatch = ["employee-name", "work-assignment", "safety-contact", "district"];
   fieldsToWatch.forEach((fieldId) => {
     const element = document.getElementById(fieldId);
     if (element) {
       element.addEventListener("input", saveToLocalStorage);
     }
   });
-};
+});
+
+// Function to set default values
+function setDefaults() {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = ("0" + (today.getMonth() + 1)).slice(-2);
+  const day = ("0" + today.getDate()).slice(-2);
+  const formattedDate = `${year}-${month}-${day}`; // Local-safe
+
+  document.getElementById("date").value = formattedDate;
+  // document.getElementById("start-time").value = "9:00 AM";
+  document.getElementById("duration").value = "3";
+  document.getElementById("speed-limit").value = "30-55";
+
+  // Only restore text input fields that may have been edited
+  const fieldsToRestore = ["employee-name", "work-assignment", "safety-contact", "district"];
+  fieldsToRestore.forEach((fieldId) => {
+    const saved = localStorage.getItem(fieldId);
+    if (saved !== null) {
+      const field = document.getElementById(fieldId);
+      if (field) field.value = saved;
+    }
+  });
+}
+
+// Save specific fields to localStorage
+function saveToLocalStorage() {
+  const fieldsToSave = ["employee-name", "work-assignment", "safety-contact", "district"];
+  fieldsToSave.forEach((fieldId) => {
+    const field = document.getElementById(fieldId);
+    if (field) {
+      localStorage.setItem(fieldId, field.value);
+    }
+  });
+}
+
+// Populate start time dropdown (6:00 AM to 5:30 PM)
+function populateStartTimeOptions() {
+  const startTimeSelect = document.getElementById("start-time");
+  if (!startTimeSelect) return;
+
+  const times = [];
+  for (let hour = 6; hour <= 17; hour++) {
+    times.push({ hour, minute: 0 });
+    if (hour !== 17) times.push({ hour, minute: 30 });
+  }
+
+  times.forEach(({ hour, minute }) => {
+    const period = hour >= 12 ? "PM" : "AM";
+    const displayHour = ((hour + 11) % 12) + 1;
+    const displayMinutes = minute === 0 ? "00" : "30";
+    const timeStr = `${displayHour}:${displayMinutes} ${period}`;
+
+    const option = document.createElement("option");
+    option.value = timeStr;
+    option.textContent = timeStr;
+    startTimeSelect.appendChild(option);
+  });
+}
+
+function setDefaultStartTime() {
+  const startTimeSelect = document.getElementById("start-time");
+  if (!startTimeSelect) return;
+
+  const now = new Date();
+  let hours = now.getHours();
+  let minutes = now.getMinutes();
+
+  // Round to nearest 30-minute increment
+  if (minutes >= 45) {
+    hours++;
+    minutes = 0;
+  } else if (minutes >= 15) {
+    minutes = 30;
+  } else {
+    minutes = 0;
+  }
+
+  // Clamp to allowed time range
+  if (hours > 17 || (hours === 17 && minutes > 30)) {
+    hours = 17;
+    minutes = 30;
+  }
+  if (hours < 6) {
+    hours = 6;
+    minutes = 0;
+  }
+
+  // Convert to 12-hour format with AM/PM
+  const period = hours >= 12 ? "PM" : "AM";
+  const displayHour = ((hours + 11) % 12) + 1;
+  const displayMinutes = minutes === 0 ? "00" : "30";
+  const timeString = `${displayHour}:${displayMinutes} ${period}`;
+
+  // Check if timeString exists in the options
+  const optionExists = Array.from(startTimeSelect.options).some((opt) => opt.value === timeString);
+
+  // Set the time to the closest valid option, or default to 9:00 AM if not found
+  startTimeSelect.value = optionExists ? timeString : "9:00 AM";
+}
 
 function generatePDF() {
-  // Force default values for certain form fields if they are empty
-  document.getElementById("date").value ||= new Date().toISOString().split("T")[0]; // Default date to today's date
-  document.getElementById("start-time").value ||= "9:00"; // Default start time
-  document.getElementById("speed-limit").value ||= "30-55"; // Default speed limit range
-  document.getElementById("duration").value ||= "4"; // Default duration value
-  document.getElementById("district").value ||= "Crawfordsville"; // Default district value
+  // Check if required fields are filled (excluding additional comments)
+  const requiredFields = ["employee-name", "work-assignment", "safety-contact", "date", "start-time", "duration", "district", "route", "speed-limit"];
+  const missingFields = requiredFields.filter((fieldId) => !document.getElementById(fieldId).value);
+
+  if (missingFields.length > 0) {
+    const missingFieldNames = missingFields.map((fieldId) => {
+      // Convert to title case by splitting and capitalizing each word
+      return fieldId
+        .replace("-", " ") // Replace hyphen with space
+        .split(" ") // Split into words
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+        .join(" "); // Rejoin the words
+    });
+    alert(`Please fill in the following fields: ${missingFieldNames.join(", ")}`);
+    return; // Prevent PDF generation if fields are missing
+  }
 
   // Clone the form to avoid altering the original
   const form = document.getElementById("job-safety-form");
   const clone = form.cloneNode(true); // Create a deep copy of the form
 
   // Loop through each input, select, and textarea field inside the cloned form
-  const fields = clone.querySelectorAll("input, select, textarea");
+  const fields = clone.querySelectorAll("input, select, [contenteditable='true']");
   fields.forEach((field) => {
     const div = document.createElement("div"); // Create a div to hold the field's value for PDF rendering
 
-    // Leave other inputs/selects unstyled — use your CSS or existing layout
+    // Apply the same styling to the div
     div.style.marginBottom = "0.5rem"; // Style the div with some margin
     div.style.fontSize = "16px"; // Set font size to 16px for readability in the PDF
 
     // Get the original field in the form to access its value
     const originalField = document.getElementById(field.id);
     if (originalField) {
-      // Check if the field is a select dropdown and handle it accordingly
+      // Handle 'select' dropdowns
       if (field.tagName === "SELECT") {
         const selectedValue = originalField.value; // Get the selected value of the dropdown
-        const selectedOption = field.querySelector(`option[value="${selectedValue}"]`); // Find the option that matches the selected value
+        const selectedOption = [...field.options].find((o) => o.value.trim() === selectedValue.trim()); // Find the option that matches the selected value
         div.textContent = selectedOption ? selectedOption.textContent : ""; // Set the div text to the option's text content
       }
-      // Check if the field is a date input and format it into MM/DD/YYYY
+      // Handle 'date' input fields
       else if (field.type === "date") {
         const iso = originalField.value; // Get the ISO date format from the original field
         const parts = iso.split("-"); // Split the date into its components (year, month, day)
         div.textContent = parts.length === 3 ? `${parts[1]}/${parts[2]}/${parts[0]}` : ""; // Format the date as MM/DD/YYYY
       }
-      // For other field types, simply set the div's text content to the field's value
+      // Handle contenteditable divs specifically for PDF generation on iPhone
+      else if (field.hasAttribute("contenteditable")) {
+        let content = originalField.innerText || ""; // Get the text content of the editable div
+
+        // Normalize double line breaks by replacing consecutive newlines with <br><br> (for PDFs)
+        content = content.replace(/\n\n+/g, "<br><br>"); // Ensure double line breaks are properly handled
+
+        div.innerHTML = content; // Use innerHTML to correctly render line breaks as HTML elements
+
+        // Apply styling that works well on the iPhone PDF
+        div.style.border = "1px solid #ccc"; // Add a light gray border to match other fields
+        div.style.padding = "5px"; // Add padding inside the div for consistent spacing
+        div.style.borderRadius = "4px"; // Optional: round the corners for consistency
+        div.style.lineHeight = "1.4"; // Ensure line height is readable
+        div.style.whiteSpace = "normal"; // Let text wrap naturally
+        div.style.wordWrap = "break-word"; // Ensure long words break properly without overflowing
+        div.style.overflowWrap = "break-word"; // Handle long words better, specifically for mobile
+        div.style.minHeight = "5em";
+      }
+
+      // Handle other field types (inputs, textareas)
       else {
         div.textContent = originalField.value || ""; // Use the field value or an empty string if it's empty
       }
@@ -128,10 +241,3 @@ function generatePDF() {
       window.open(url, "_blank"); // Open the PDF in a new tab
     });
 }
-
-document.querySelectorAll("textarea").forEach((textarea) => {
-  textarea.addEventListener("input", function () {
-    this.style.height = "auto";
-    this.style.height = this.scrollHeight + "px";
-  });
-});

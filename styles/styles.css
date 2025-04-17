@@ -1,6 +1,6 @@
 body {
   font-family: sans-serif;
-  padding: 1rem;
+  padding: 16px; /* 1rem = 16px */
   background: #f4f4f4;
 }
 
@@ -11,8 +11,8 @@ h3 {
 
 .section {
   background: white;
-  padding: 1rem;
-  margin-bottom: 1rem;
+  padding: 16px; /* 1rem = 16px */
+  margin-bottom: 16px; /* 1rem = 16px */
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -22,36 +22,36 @@ h3 {
 }
 
 .input-group {
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px; /* 0.5rem = 8px */
 }
 
 .input-group label {
   display: block;
-  margin-bottom: 0.2rem;
+  margin-bottom: 3px; /* 0.2rem = 3px */
   font-weight: bold;
 }
 
 input,
 select {
   width: calc(100% - 20px);
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
+  padding: 8px; /* 0.5rem = 8px */
+  margin-bottom: 8px; /* 0.5rem = 8px */
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
 }
 
 input[type="date"] {
-  font-family: inherit; /* Inherit the font family from parent elements */
-  font-size: inherit; /* Ensure the font size matches */
-  font-weight: inherit; /* Inherit the font weight if needed */
-  color: inherit; /* Ensure the color matches */
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
 }
 
 textarea {
   width: calc(100% - 30px);
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
+  padding: 8px; /* 0.5rem = 8px */
+  margin-bottom: 8px; /* 0.5rem = 8px */
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
@@ -70,7 +70,7 @@ input:focus {
 }
 
 button {
-  padding: 0.7rem 1.5rem;
+  padding: 12px 24px; /* 0.7rem = 12px, 1.5rem = 24px */
   background: #007bff;
   color: white;
   border: none;
@@ -86,22 +86,21 @@ button:hover {
 .work-details-section,
 .additional_comments-section {
   border: 1px solid #ccc;
-  padding: 1rem;
+  padding: 16px; /* 1rem = 16px */
   border-radius: 4px;
-  margin-bottom: 1rem;
+  margin-bottom: 16px; /* 1rem = 16px */
 }
 
 .employee-section {
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px; /* 0.5rem = 8px */
 }
 
 .work-details-section {
-  margin-bottom: 1.5rem;
+  margin-bottom: 24px; /* 1.5rem = 24px */
 }
 
-/* Remove extra space between sections */
 .section {
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px; /* 0.5rem = 8px */
 }
 
 p {
@@ -111,15 +110,15 @@ p {
 .no-break {
   page-break-inside: avoid;
   break-inside: avoid;
-  margin-top: 2rem;
+  margin-top: 32px; /* 2rem = 32px */
 }
 
 .fancy-input {
   border: 1px solid #ccc;
   background: white;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  min-height: 3rem;
+  padding: 8px; /* 0.5rem = 8px */
+  margin-bottom: 16px; /* 1rem = 16px */
+  min-height: 48px; /* 3rem = 48px */
   font-family: inherit;
   font-size: 16px;
   border-radius: 4px;
