@@ -245,5 +245,5 @@ function generatePDF() {
       .then((url) => {
         window.open(url, "_blank"); // Open the PDF in a new tab
       });
-  }, 2000); // 200ms is usually enough; tweak if needed
+  }, 200); // 200ms is usually enough; tweak if needed
 }
