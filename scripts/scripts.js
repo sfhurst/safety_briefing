@@ -165,6 +165,15 @@ function generatePDF() {
     additionalNotes.value = "No notes.";
   }
 
+  // Close the iPhone keyboard if it is open
+  document.activeElement.blur(); // Kills keyboard if it's up
+  setTimeout(() => {
+    const form = document.getElementById("job-safety-form");
+    const clone = form.cloneNode(true);
+
+    // ... continue your generatePDF logic here ...
+  }, 200); // 200ms is usually enough; tweak if needed
+
   // Clone the form to avoid altering the original
   const form = document.getElementById("job-safety-form");
   const clone = form.cloneNode(true); // Create a deep copy of the form
