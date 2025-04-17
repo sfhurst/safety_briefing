@@ -202,14 +202,14 @@ function generatePDF() {
   const form = document.getElementById("job-safety-form");
   const clone = form.cloneNode(true); // Create a deep copy of the form
 
-  // Loop through each input, select, and textarea field inside the cloned form
-  const fields = clone.querySelectorAll("input, select, [contenteditable='true']");
+  // Loop through each input and select field inside the cloned form
+  const fields = clone.querySelectorAll("input, select");
   fields.forEach((field) => {
     const div = document.createElement("div"); // Create a div to hold the field's value for PDF rendering
 
     // Apply the same styling to the div
     div.style.marginBottom = "0.5rem"; // Style the div with some margin
-    div.style.fontSize = "16px"; // Set font size to 16px for readability in the PDF
+    div.style.fontSize = "12px"; // Set font size to 16px for readability in the PDF
 
     // Get the original field in the form to access its value
     const originalField = document.getElementById(field.id);
@@ -246,12 +246,20 @@ function generatePDF() {
   clone.style.width = "100%"; // Ensure the form spans the full width within the max width
   clone.style.boxSizing = "border-box"; // Ensure padding is included in the width calculation
 
-  // Insert a page break before the "Additional Comments" section (if it exists)
-  const commentsSection = clone.querySelector("#additional-comments")?.closest(".form-section");
-  if (commentsSection) {
-    commentsSection.style.pageBreakBefore = "always"; // Force a page break before this section
-    commentsSection.style.marginTop = "1in"; // Add some margin on top for spacing
-  }
+  // Apply global font styling inside the clone
+  clone.querySelectorAll("h2").forEach((h2) => {
+    h2.style.fontSize = "16px";
+  });
+  clone.querySelectorAll("h3").forEach((h3) => {
+    h3.style.fontSize = "14px";
+  });
+  clone.querySelectorAll("label").forEach((label) => {
+    label.style.fontSize = "12px";
+  });
+  clone.querySelectorAll("div").forEach((div) => {
+    div.style.marginBottom = "0.5rem";
+    div.style.fontSize = "12px";
+  });
 
   // Use html2pdf to generate and open the PDF
   html2pdf()
