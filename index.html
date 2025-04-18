@@ -37,13 +37,13 @@
         <h3>Employee Information</h3>
         <div class="section employee-section">
           <div class="input-group">
-            <label for="employee-name">Employee Name:</label>
+            <label for="employee-name">Employee Name(s):</label>
             <input type="text" id="employee-name" name="employee-name" />
           </div>
           <div class="input-group">
             <label for="work-assignment">Work Assignment:</label>
             <select class="dropdown-width-adjuster" id="work-assignment">
-              <option value="">Select inspection</option>
+              <option value="">Select</option>
               <option value="Routine Bridge Inspections">Routine Bridge Inspections</option>
               <option value="Large Culvert Inspections">Large Culvert Inspections</option>
               <option value="General Inspections">General Inspections</option>
@@ -51,8 +51,29 @@
             </select>
           </div>
           <div class="input-group">
-            <label for="safety-contact">Safety Contact:</label>
+            <label for="safety-contact">Safety Contact(s):</label>
             <input type="text" id="safety-contact" name="safety-contact" />
+          </div>
+          <div class="input-group">
+            <label for="contact-method">Contact Method:</label>
+            <select class="dropdown-width-adjuster" id="contact-method">
+              <option value="">Select</option>
+              <option value="Text">Text</option>
+              <option value="Text, Location Sharing">Text, Location Sharing</option>
+              <option value="Group Text">Group Text</option>
+              <option value="Group Text, Location Sharing">Group Text, Location Sharing</option>
+              <option value="Paired Work">Paired Work</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="contact-frequency">Contact Frequency:</label>
+            <select class="dropdown-width-adjuster" id="contact-frequency">
+              <option value="">Select</option>
+              <option value="Initial and Final Check-In">Initial and Final Check-In</option>
+              <option value="Check-In Every 30 Minutes">Check-In Every 30 Minutes</option>
+              <option value="Check-In Every Hour">Check-In Every Hour</option>
+              <option value="Continuous Contact">Continuous Contact</option>
+            </select>
           </div>
         </div>
       </div>
@@ -65,21 +86,21 @@
             <input type="date" id="date" name="date" />
           </div>
           <div class="input-group">
-            <label for="start-time">Start Time (Hour):</label>
+            <label for="start-time">Start Time:</label>
             <select class="dropdown-width-adjuster" id="start-time" name="start-time">
-              <option value="">Select hour</option>
+              <option value="">Select</option>
             </select>
           </div>
           <div class="input-group">
-            <label for="duration">Duration (Hours):</label>
+            <label for="duration">Duration:</label>
             <select class="dropdown-width-adjuster" id="duration" name="duration">
-              <option value="">Select duration</option>
+              <option value="">Select</option>
             </select>
           </div>
           <div class="input-group">
             <label for="district">District:</label>
             <select class="dropdown-width-adjuster" id="district" name="district">
-              <option value="">Select district</option>
+              <option value="">Select</option>
               <option value="Crawfordsville">Crawfordsville</option>
               <option value="Fort Wayne">Fort Wayne</option>
               <option value="Greenfield">Greenfield</option>
@@ -110,10 +131,11 @@
           <div class="input-group">
             <label for="weather">Weather:</label>
             <select class="dropdown-width-adjuster" id="weather" name="weather">
-              <option value="">Select weather</option>
+              <option value="">Select</option>
               <option value="Sunny">Sunny</option>
               <option value="Partly Cloudy">Partly Cloudy</option>
               <option value="Cloudy">Cloudy</option>
+              <option value="Windy">Windy</option>
               <option value="Light Rain">Light Rain</option>
               <option value="Light Snow">Light Snow</option>
             </select>
@@ -121,7 +143,7 @@
           <div class="input-group">
             <label for="temperature">Temperature (°F):</label>
             <select class="dropdown-width-adjuster" id="temperature" name="temperature">
-              <option value="">Select temperature</option>
+              <option value="">Select</option>
               <option value="90-100">90-100</option>
               <option value="80-90">80-90</option>
               <option value="70-80">70-80</option>
@@ -135,7 +157,7 @@
           <div class="input-group">
             <label for="surface">Surface Condition:</label>
             <select class="dropdown-width-adjuster" id="surface" name="surface">
-              <option value="">Select surface</option>
+              <option value="">Select</option>
               <option value="Dry">Dry</option>
               <option value="Wet">Wet</option>
               <option value="Snow Covered">Snow Covered</option>
@@ -143,26 +165,28 @@
             </select>
           </div>
           <div class="input-group">
+            <label for="seasonal-hazards">Seasonal Hazards:</label>
+            <select class="dropdown-width-adjuster" id="seasonal-hazards" name="seasonal-hazards">
+              <option value="">Select</option>
+              <option value="Sunburn, Dehydration, Heat Stroke, Air Quality">Sunburn, Dehydration, Heat Stroke, Air Quality</option>
+              <option value="Insects, Ticks, Snakes, Wildlife">Insects, Ticks, Snakes, Wildlife</option>
+              <option value="Allergens, Pollen">Allergens, Pollen</option>
+              <option value="Pop-Up Showers, High Water, Slippery Surfaces">Pop-Up Showers, High Water, Slippery Surfaces</option>
+              <option value="Slippery Slopes, Mud">Slippery Slopes, Mud</option>
+              <option value="Ice, Snow, Slippery Surfaces">Ice, Snow, Slippery Surfaces</option>
+              <option value="Wind Chill, Frostbite, Hypothermia">Wind Chill, Frostbite, Hypothermia</option>
+            </select>
+          </div>
+          <div class="input-group">
             <label for="traffic">Traffic Conditions:</label>
             <select class="dropdown-width-adjuster" id="traffic" name="traffic">
-              <option value="">Select traffic</option>
+              <option value="">Select</option>
               <option value="Light">Light (Rural)</option>
               <option value="Moderate">Moderate (Urban)</option>
               <option value="Heavy">Heavy (Interstate)</option>
             </select>
           </div>
-          <div class="input-group">
-            <label for="seasonal-hazards">Seasonal Hazards:</label>
-            <select class="dropdown-width-adjuster" id="seasonal-hazards" name="seasonal-hazards">
-              <option value="">Select Seasonal Hazard</option>
-              <option value="Heat / Dehydration / Sun Exposure">Heat / Dehydration / Sun Exposure</option>
-              <option value="Insects / Ticks / Snakes">Insects / Ticks / Snakes</option>
-              <option value="Allergies / Pollen / Dust">Allergies / Pollen / Dust</option>
-              <option value="Cold / Frostbite / Hypothermia">Cold / Frostbite / Hypothermia</option>
-              <option value="Ice / Snow / Slippery Surfaces">Ice / Snow / Slippery Surfaces</option>
-              <option value="Wet Leaves / Fall Debris">Wet Leaves / Fall Debris</option>
-            </select>
-          </div>
+
           <div class="input-group">
             <label for="additional-notes">Additional Notes:</label>
             <input type="text" id="additional-notes" name="additional-notes" maxlength="60" />
