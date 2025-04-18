@@ -74,12 +74,8 @@ button {
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease; /* Smooth transition for background */
-  width: 150px;
-}
-
-button:hover {
-  background: #0056b3;
-  background: #15590e;
+  font-size: 20px;
+  width: 200px;
 }
 
 button:disabled {
