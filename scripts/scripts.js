@@ -27,33 +27,42 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  let typingTimer;
-  const doneTypingInterval = 4000; // 4 seconds
   const inputs = document.querySelectorAll("input, [contenteditable]");
   const button = document.getElementById("generate-pdf");
 
+  // Set the button to yellow (confirm edits)
+  function setYellow() {
+    button.classList.add("pending");
+    button.textContent = "Record Edits";
+  }
+
+  // Set the button to blue (open PDF)
+  function setBlue() {
+    button.classList.remove("pending");
+    button.textContent = "Open PDF";
+  }
+
+  // Trigger yellow state when input or contenteditable is focused or edited
   inputs.forEach((el) => {
-    el.addEventListener("focus", () => {
-      button.disabled = true;
-      clearTimeout(typingTimer);
-      typingTimer = setTimeout(() => {
-        el.blur(); // Close keyboard
-        button.disabled = false;
-      }, doneTypingInterval);
-    });
-
-    el.addEventListener("keydown", () => {
-      clearTimeout(typingTimer);
-    });
-
-    el.addEventListener("keyup", () => {
-      clearTimeout(typingTimer);
-      typingTimer = setTimeout(() => {
-        el.blur();
-        button.disabled = false;
-      }, doneTypingInterval);
-    });
+    el.addEventListener("input", setYellow);
+    el.addEventListener("focus", setYellow);
   });
+
+  // Button click listener
+  button.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    if (button.classList.contains("pending")) {
+      if (!validateRequiredFields(button)) return; // Stop if missing fields
+      setBlue(); // All fields filled, allow PDF on next click
+    } else {
+      setYellow(); // Reset state
+      generatePDF(); // Actually generate the PDF
+    }
+  });
+
+  // Initial state
+  setYellow(); // Start in the yellow state
 });
 
 // Attach real-time highlight check for select fields
@@ -195,8 +204,8 @@ function setDefaultStartTime() {
   updateSelectHighlights(); // Re-check highlights after setting values
 }
 
-function generatePDF() {
-  // Check if required fields are filled (excluding additional comments)
+// Check for missing fields
+function validateRequiredFields(button) {
   const requiredFields = [
     "employee-name",
     "work-assignment",
@@ -213,21 +222,34 @@ function generatePDF() {
     "traffic",
     "seasonal-hazards",
   ];
-  const missingFields = requiredFields.filter((fieldId) => !document.getElementById(fieldId).value);
+
+  const missingFields = requiredFields.filter((fieldId) => {
+    const el = document.getElementById(fieldId);
+    return !el || !el.value?.trim();
+  });
 
   if (missingFields.length > 0) {
-    const missingFieldNames = missingFields.map((fieldId) => {
-      // Convert to title case by splitting and capitalizing each word
-      return fieldId
-        .replace("-", " ") // Replace hyphen with space
-        .split(" ") // Split into words
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
-        .join(" "); // Rejoin the words
-    });
+    const missingFieldNames = missingFields.map((fieldId) =>
+      fieldId
+        .replace("-", " ")
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ")
+    );
+
     alert(`Please fill in the following fields: ${missingFieldNames.join(", ")}`);
-    return; // Prevent PDF generation if fields are missing
+
+    // Set button to pending/yellow
+    button.classList.add("pending");
+    button.textContent = "Record Edits";
+
+    return false; // Validation failed
   }
 
+  return true; // All good
+}
+
+function generatePDF() {
   // Set default value for additional notes if blank
   const additionalNotes = document.getElementById("additional-notes");
   if (additionalNotes && additionalNotes.value.trim() === "") {

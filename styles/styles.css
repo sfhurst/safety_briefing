@@ -68,16 +68,18 @@ input:focus {
 button {
   margin-top: 10px;
   padding: 12px 24px; /* 0.7rem = 12px, 1.5rem = 24px */
-  background: #007bff;
+  background: #218a15;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease; /* Smooth transition for background */
+  width: 150px;
 }
 
 button:hover {
   background: #0056b3;
+  background: #15590e;
 }
 
 button:disabled {
@@ -85,6 +87,15 @@ button:disabled {
   color: #535252; /* Light grey text */
   cursor: not-allowed; /* Indicate the button is not clickable */
   opacity: 0.6; /* Make it slightly transparent */
+}
+
+button.pending {
+  background: #6bd456; /* Bootstrap warning yellow */
+  color: #212529;
+  background: #007bff;
+  color: white;
+  cursor: pointer;
+  opacity: 1; /* Fully visible */
 }
 
 .employee-section,
