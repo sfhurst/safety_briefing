@@ -442,6 +442,8 @@ function validateRequiredFields(button) {
     "surface",
     "traffic",
     "seasonal-hazards",
+    "contact-method",
+    "contact-frequency",
   ];
 
   const missingFields = requiredFields.filter((fieldId) => {
