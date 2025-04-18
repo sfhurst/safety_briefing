@@ -8,12 +8,14 @@ body {
 h2,
 h3 {
   margin: 10px 0 5px 0;
+  font-size: 20px;
 }
 
 .section {
   background: white;
   padding: 16px; /* 1rem = 16px */
   margin-bottom: 16px; /* 1rem = 16px */
+  margin-bottom: 8px; /* 0.5rem = 8px */
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -30,6 +32,7 @@ h3 {
   display: block;
   margin-bottom: 3px; /* 0.2rem = 3px */
   font-weight: bold;
+  font-size: 20px;
 }
 
 input,
@@ -40,11 +43,13 @@ select {
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
+  font-size: 20px;
 }
 
 input[type="date"] {
   font-family: inherit;
   font-size: inherit;
+  font-size: 20px;
   font-weight: inherit;
   color: inherit;
 }
@@ -61,6 +66,7 @@ input:focus {
 }
 
 button {
+  margin-top: 10px;
   padding: 12px 24px; /* 0.7rem = 12px, 1.5rem = 24px */
   background: #007bff;
   color: white;
@@ -100,10 +106,6 @@ button:disabled {
 
 .work-details-section {
   margin-bottom: 24px; /* 1.5rem = 24px */
-}
-
-.section {
-  margin-bottom: 8px; /* 0.5rem = 8px */
 }
 
 p {

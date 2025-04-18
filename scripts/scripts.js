@@ -56,6 +56,41 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+// Attach real-time highlight check for select fields
+document.querySelectorAll("select").forEach((select) => {
+  select.addEventListener("change", updateSelectHighlights);
+});
+
+// Attach real-time highlight check for input fields
+document.querySelectorAll('input[type="text"], input[type="date"]').forEach((input) => {
+  if (input.id !== "additional-notes") {
+    input.addEventListener("input", updateSelectHighlights);
+  }
+});
+
+function updateSelectHighlights() {
+  // Highlight select fields
+  document.querySelectorAll("select").forEach((select) => {
+    const selectedOption = select.options[select.selectedIndex];
+    if (selectedOption.text.includes("Select")) {
+      select.style.backgroundColor = "#ffeeba"; // light yellow
+    } else {
+      select.style.backgroundColor = ""; // reset
+    }
+  });
+
+  // Highlight blank input fields (excluding #additional-notes)
+  document.querySelectorAll('input[type="text"], input[type="date"]').forEach((input) => {
+    if (input.id === "additional-notes") return; // exclude
+
+    if (input.value.trim() === "") {
+      input.style.backgroundColor = "#ffeeba"; // light yellow
+    } else {
+      input.style.backgroundColor = ""; // reset
+    }
+  });
+}
+
 // Function to set default values
 function setDefaults() {
   const today = new Date();
@@ -78,6 +113,8 @@ function setDefaults() {
       if (field) field.value = saved;
     }
   });
+
+  updateSelectHighlights(); // Re-check highlights after setting values
 }
 
 // Save specific fields to localStorage
@@ -154,6 +191,8 @@ function setDefaultStartTime() {
 
   // Set the time to the closest valid option, or default to 9:00 AM if not found
   startTimeSelect.value = optionExists ? timeString : "9:00 AM";
+
+  updateSelectHighlights(); // Re-check highlights after setting values
 }
 
 function generatePDF() {
@@ -240,7 +279,6 @@ function generatePDF() {
   });
 
   // Style the cloned form to ensure it renders nicely in the PDF
-  clone.style.fontSize = "16px"; // Set font size for the entire form
   clone.style.padding = "0"; // Add padding around the form for better readability
   clone.style.maxWidth = "8in"; // Set a max width of 8 inches (standard letter size) for PDF output
   clone.style.width = "100%"; // Ensure the form spans the full width within the max width
@@ -248,7 +286,7 @@ function generatePDF() {
 
   // Apply global font styling inside the clone
   clone.querySelectorAll("h2").forEach((h2) => {
-    h2.style.fontSize = "16px";
+    h2.style.fontSize = "20px";
   });
   clone.querySelectorAll("h3").forEach((h3) => {
     h3.style.fontSize = "14px";
@@ -259,6 +297,11 @@ function generatePDF() {
   clone.querySelectorAll("div").forEach((div) => {
     div.style.marginBottom = "0.5rem";
     div.style.fontSize = "12px";
+  });
+  clone.querySelectorAll("p").forEach((p) => {
+    p.style.fontSize = "12px";
+    p.style.marginBottom = "0.5rem";
+    p.style.lineHeight = "1.4";
   });
 
   // Use html2pdf to generate and open the PDF
