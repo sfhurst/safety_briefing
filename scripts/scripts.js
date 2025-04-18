@@ -482,40 +482,6 @@ function generatePDF() {
   // Close the iPhone keyboard if it is open
   document.activeElement.blur(); // Kills keyboard if it's up
 
-  // Clone the form and apply styles
-  const clone = cloneFormWithStyles();
-
-  // Apply metadata before generating the PDF
-  const metadata = getPDFMetadata();
-
-  // Use html2pdf to generate and open the PDF
-  html2pdf()
-    .set({
-      margin: [0.75, 0.5, 0.5, 0.5], // Set margins for the PDF (top, right, bottom, left)
-      filename: "Job Safety Briefing.pdf", // Set the default filename for the PDF
-      image: { type: "jpeg", quality: 0.98 }, // Set image quality and format
-      html2canvas: {
-        scale: 2, // Increase scale for better image quality
-        useCORS: true, // Enable CORS to allow loading images from different origins
-        windowWidth: 850, // Limit the width of the rendered page (this ensures the PDF doesn't get too wide)
-      },
-      jsPDF: {
-        unit: "in", // Set the unit of measurement to inches
-        format: "letter", // Set the PDF format to letter size
-        orientation: "portrait", // Set the orientation to portrait (vertical)
-        properties: metadata, // Add metadata to the PDF
-      },
-    })
-    .from(clone) // Use the cloned form to generate the PDF
-    .output("bloburl") // Output the PDF as a blob URL (used to open in a new window)
-    .then((url) => {
-      window.open(url, "_blank"); // Open the PDF in a new tab
-    });
-}
-
-// :::: (Clone Form with Styling) /////////////////////////////
-
-function cloneFormWithStyles() {
   // Clone the form to avoid altering the original
   const form = document.getElementById("job-safety-form");
   const clone = form.cloneNode(true); // Create a deep copy of the form
@@ -527,7 +493,7 @@ function cloneFormWithStyles() {
 
     // Apply the same styling to the div
     div.style.marginBottom = "0.5rem"; // Style the div with some margin
-    div.style.fontSize = "12px"; // Set font size to 12px for readability in the PDF
+    div.style.fontSize = "12px"; // Set font size to 16px for readability in the PDF
 
     // Get the original field in the form to access its value
     const originalField = document.getElementById(field.id);
@@ -583,43 +549,26 @@ function cloneFormWithStyles() {
     p.style.lineHeight = "1.4";
   });
 
-  return clone;
-}
-
-// :::: (PDF Metadata) /////////////////////////////
-
-function getPDFMetadata() {
-  const timestamp = new Date().toISOString();
-
-  // Capture screen resolution and browser info if needed
-  const screenResolution = `${window.screen.width}x${window.screen.height}`;
-  const userAgent = navigator.userAgent;
-  const deviceType = /Mobi|Android|iPhone/i.test(userAgent) ? "Mobile" : "Desktop";
-  const browserInfo = getBrowserInfo(); // Custom function to determine browser type/version
-
-  return {
-    title: "Job Safety Briefing",
-    developer: "iterate", // Developer tag
-    created: timestamp, // Timestamp of document creation
-    screenResolution: screenResolution, // Screen resolution
-    deviceType: deviceType, // Device type (mobile or desktop)
-    browser: browserInfo, // Browser information
-    // Add any other metadata properties you think are useful
-  };
-}
-
-// Custom function to detect browser and version
-function getBrowserInfo() {
-  const userAgent = navigator.userAgent;
-  if (userAgent.includes("Chrome")) {
-    return "Chrome";
-  } else if (userAgent.includes("Firefox")) {
-    return "Firefox";
-  } else if (userAgent.includes("Safari")) {
-    return "Safari";
-  } else if (userAgent.includes("Edge")) {
-    return "Edge";
-  } else {
-    return "Unknown Browser";
-  }
+  // Use html2pdf to generate and open the PDF
+  html2pdf()
+    .set({
+      margin: [0.75, 0.5, 0.5, 0.5], // Set margins for the PDF (top, right, bottom, left)
+      filename: "Job Safety Briefing.pdf", // Set the default filename for the PDF
+      image: { type: "jpeg", quality: 0.98 }, // Set image quality and format
+      html2canvas: {
+        scale: 2, // Increase scale for better image quality
+        useCORS: true, // Enable CORS to allow loading images from different origins
+        windowWidth: 850, // Limit the width of the rendered page (this ensures the PDF doesn't get too wide)
+      },
+      jsPDF: {
+        unit: "in", // Set the unit of measurement to inches
+        format: "letter", // Set the PDF format to letter size
+        orientation: "portrait", // Set the orientation to portrait (vertical)
+      },
+    })
+    .from(clone) // Use the cloned form to generate the PDF
+    .output("bloburl") // Output the PDF as a blob URL (used to open in a new window)
+    .then((url) => {
+      window.open(url, "_blank"); // Open the PDF in a new tab
+    });
 }
