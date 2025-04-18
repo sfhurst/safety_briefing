@@ -470,51 +470,112 @@ function validateRequiredFields(button) {
   return true; // All good
 }
 
-// ::::: (Clone and Style Form for PDF) :::::::::::::::::
+// :::: (Generate PDF) /////////////////////////////
 
-function cloneFormForPDF() {
+function generatePDF() {
+  // Set default value for additional notes if blank
+  const additionalNotes = document.getElementById("additional-notes");
+  if (additionalNotes && additionalNotes.value.trim() === "") {
+    additionalNotes.value = "No notes.";
+  }
+
+  // Close the iPhone keyboard if it is open
+  document.activeElement.blur(); // Kills keyboard if it's up
+
+  // Clone the form and apply styles
+  const clone = cloneFormWithStyles();
+
+  // Apply metadata before generating the PDF
+  const metadata = getPDFMetadata();
+
+  // Use html2pdf to generate and open the PDF
+  html2pdf()
+    .set({
+      margin: [0.75, 0.5, 0.5, 0.5], // Set margins for the PDF (top, right, bottom, left)
+      filename: "Job Safety Briefing.pdf", // Set the default filename for the PDF
+      image: { type: "jpeg", quality: 0.98 }, // Set image quality and format
+      html2canvas: {
+        scale: 2, // Increase scale for better image quality
+        useCORS: true, // Enable CORS to allow loading images from different origins
+        windowWidth: 850, // Limit the width of the rendered page (this ensures the PDF doesn't get too wide)
+      },
+      jsPDF: {
+        unit: "in", // Set the unit of measurement to inches
+        format: "letter", // Set the PDF format to letter size
+        orientation: "portrait", // Set the orientation to portrait (vertical)
+        properties: metadata, // Add metadata to the PDF
+      },
+    })
+    .from(clone) // Use the cloned form to generate the PDF
+    .output("bloburl") // Output the PDF as a blob URL (used to open in a new window)
+    .then((url) => {
+      window.open(url, "_blank"); // Open the PDF in a new tab
+    });
+}
+
+// :::: (Clone Form with Styling) /////////////////////////////
+
+function cloneFormWithStyles() {
+  // Clone the form to avoid altering the original
   const form = document.getElementById("job-safety-form");
-  const clone = form.cloneNode(true);
+  const clone = form.cloneNode(true); // Create a deep copy of the form
 
-  // Replace inputs/selects with styled divs
+  // Loop through each input and select field inside the cloned form
   const fields = clone.querySelectorAll("input, select");
   fields.forEach((field) => {
-    const div = document.createElement("div");
-    div.style.marginBottom = "0.5rem";
-    div.style.fontSize = "12px";
+    const div = document.createElement("div"); // Create a div to hold the field's value for PDF rendering
 
+    // Apply the same styling to the div
+    div.style.marginBottom = "0.5rem"; // Style the div with some margin
+    div.style.fontSize = "12px"; // Set font size to 12px for readability in the PDF
+
+    // Get the original field in the form to access its value
     const originalField = document.getElementById(field.id);
     if (originalField) {
+      // Handle 'select' dropdowns
       if (field.tagName === "SELECT") {
-        const selectedValue = originalField.value;
-        const selectedOption = [...field.options].find((o) => o.value.trim() === selectedValue.trim());
-        div.textContent = selectedOption ? selectedOption.textContent : "";
-      } else if (field.type === "date") {
-        const iso = originalField.value;
-        const parts = iso.split("-");
-        div.textContent = parts.length === 3 ? `${parts[1]}/${parts[2]}/${parts[0]}` : "";
-      } else {
-        div.textContent = originalField.value || "";
+        const selectedValue = originalField.value; // Get the selected value of the dropdown
+        const selectedOption = [...field.options].find((o) => o.value.trim() === selectedValue.trim()); // Find the option that matches the selected value
+        div.textContent = selectedOption ? selectedOption.textContent : ""; // Set the div text to the option's text content
+      }
+      // Handle 'date' input fields
+      else if (field.type === "date") {
+        const iso = originalField.value; // Get the ISO date format from the original field
+        const parts = iso.split("-"); // Split the date into its components (year, month, day)
+        div.textContent = parts.length === 3 ? `${parts[1]}/${parts[2]}/${parts[0]}` : ""; // Format the date as MM/DD/YYYY
       }
 
-      field.replaceWith(div);
+      // Handle other field types (inputs, textareas)
+      else {
+        div.textContent = originalField.value || ""; // Use the field value or an empty string if it's empty
+      }
+
+      field.replaceWith(div); // Replace the original form field with the new div containing the value
     } else {
+      // Log an error if the original field is not found in the form
       console.error(`Original field with ID ${field.id} not found.`);
     }
   });
 
-  // Global styling
-  clone.style.padding = "0";
-  clone.style.maxWidth = "8in";
-  clone.style.width = "100%";
-  clone.style.boxSizing = "border-box";
+  // Style the cloned form to ensure it renders nicely in the PDF
+  clone.style.padding = "0"; // Add padding around the form for better readability
+  clone.style.maxWidth = "8in"; // Set a max width of 8 inches (standard letter size) for PDF output
+  clone.style.width = "100%"; // Ensure the form spans the full width within the max width
+  clone.style.boxSizing = "border-box"; // Ensure padding is included in the width calculation
 
-  clone.querySelectorAll("h2").forEach((el) => (el.style.fontSize = "20px"));
-  clone.querySelectorAll("h3").forEach((el) => (el.style.fontSize = "14px"));
-  clone.querySelectorAll("label").forEach((el) => (el.style.fontSize = "12px"));
-  clone.querySelectorAll("div").forEach((el) => {
-    el.style.marginBottom = "0.5rem";
-    el.style.fontSize = "12px";
+  // Apply global font styling inside the clone
+  clone.querySelectorAll("h2").forEach((h2) => {
+    h2.style.fontSize = "20px";
+  });
+  clone.querySelectorAll("h3").forEach((h3) => {
+    h3.style.fontSize = "14px";
+  });
+  clone.querySelectorAll("label").forEach((label) => {
+    label.style.fontSize = "12px";
+  });
+  clone.querySelectorAll("div").forEach((div) => {
+    div.style.marginBottom = "0.5rem";
+    div.style.fontSize = "12px";
   });
   clone.querySelectorAll("p").forEach((p) => {
     p.style.fontSize = "12px";
@@ -525,46 +586,40 @@ function cloneFormForPDF() {
   return clone;
 }
 
-// ::::: (PDF Options and Metadata) :::::::::::::::::
+// :::: (PDF Metadata) /////////////////////////////
 
-function getPDFOptions() {
+function getPDFMetadata() {
+  const timestamp = new Date().toISOString();
+
+  // Capture screen resolution and browser info if needed
+  const screenResolution = `${window.screen.width}x${window.screen.height}`;
+  const userAgent = navigator.userAgent;
+  const deviceType = /Mobi|Android|iPhone/i.test(userAgent) ? "Mobile" : "Desktop";
+  const browserInfo = getBrowserInfo(); // Custom function to determine browser type/version
+
   return {
-    margin: [0.75, 0.5, 0.5, 0.5],
-    filename: "Job Safety Briefing.pdf",
-    image: { type: "jpeg", quality: 0.98 },
-    html2canvas: {
-      scale: 2,
-      useCORS: true,
-      windowWidth: 850,
-    },
-    jsPDF: {
-      unit: "in",
-      format: "letter",
-      orientation: "portrait",
-    },
-    // You can add custom metadata here if you switch to using jsPDF directly
-    // e.g., after generating blob, pass to jsPDF and use doc.setProperties({ ... })
+    title: "Job Safety Briefing",
+    developer: "iterate", // Developer tag
+    created: timestamp, // Timestamp of document creation
+    screenResolution: screenResolution, // Screen resolution
+    deviceType: deviceType, // Device type (mobile or desktop)
+    browser: browserInfo, // Browser information
+    // Add any other metadata properties you think are useful
   };
 }
 
-// ::::: (Generate PDF) ::::::::::::::::::::::::::::::
-
-function generatePDF() {
-  const additionalNotes = document.getElementById("additional-notes");
-  if (additionalNotes && additionalNotes.value.trim() === "") {
-    additionalNotes.value = "No notes.";
+// Custom function to detect browser and version
+function getBrowserInfo() {
+  const userAgent = navigator.userAgent;
+  if (userAgent.includes("Chrome")) {
+    return "Chrome";
+  } else if (userAgent.includes("Firefox")) {
+    return "Firefox";
+  } else if (userAgent.includes("Safari")) {
+    return "Safari";
+  } else if (userAgent.includes("Edge")) {
+    return "Edge";
+  } else {
+    return "Unknown Browser";
   }
-
-  document.activeElement.blur(); // Kill iPhone keyboard
-
-  const styledClone = cloneFormForPDF(); // Get cleaned/styled clone
-  const options = getPDFOptions(); // Get PDF settings
-
-  html2pdf()
-    .set(options)
-    .from(styledClone)
-    .output("bloburl")
-    .then((url) => {
-      window.open(url, "_blank");
-    });
 }
