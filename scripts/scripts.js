@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   linkTemperatureToSeasonalHazards();
   linkWeatherToSurfaceCondition();
   linkSurfaceConditionToHazards();
+  linkFrequencyToDuration();
   monitorInputChanges(button);
   monitorSpecificFields(["employee-name", "work-assignment", "safety-contact", "district"]);
   monitorShortcutsForFields(["employee-name", "safety-contact"], button);
@@ -148,17 +149,25 @@ function linkWeatherToSurfaceCondition() {
 
   weatherSel.addEventListener("change", () => {
     const w = weatherSel.value;
+    let hazard = "";
+    let surface = "";
 
-    if (w === "Light Rain" || w === "Light Snow") {
-      surfaceSel.value = "Wet";
-      surfaceSel.dispatchEvent(new Event("change"));
+    switch (w) {
+      case "Light Rain":
+        surface = "Wet";
+        hazard = "Slippery Slopes, Mud";
+        break;
+      case "Light Snow":
+        surface = "Wet";
+        hazard = "Ice, Snow, Slippery Surfaces";
+        break;
+      default:
+        break;
     }
 
-    let hazard = "";
-    if (w === "Light Snow") {
-      hazard = "Ice, Snow, Slippery Surfaces";
-    } else if (w === "Light Rain") {
-      hazard = "Slippery Slopes, Mud";
+    if (surface) {
+      surfaceSel.value = surface;
+      surfaceSel.dispatchEvent(new Event("change"));
     }
 
     if (hazard) {
@@ -173,39 +182,93 @@ function linkWeatherToSurfaceCondition() {
 function linkTemperatureToSeasonalHazards() {
   const tempSel = document.getElementById("temperature");
   const weatherSel = document.getElementById("weather");
+  const surfaceSel = document.getElementById("surface");
   const hazSel = document.getElementById("seasonal-hazards");
-  if (!tempSel || !weatherSel || !hazSel) return;
+  const notesInput = document.getElementById("additional-notes");
+  if (!tempSel || !weatherSel || !hazSel || !surfaceSel) return;
 
   tempSel.addEventListener("change", () => {
     const t = tempSel.value;
     const w = weatherSel.value;
+    const s = surfaceSel.value;
     let hazard = "";
+    let newSurface = "";
+    let newWeather = "";
+    let newNotes = "";
 
-    // Weather overrides first
-    if (w === "Light Snow") {
-      hazard = "Ice, Snow, Slippery Surfaces";
-    } else if (w === "Light Rain") {
-      hazard = "Slippery Slopes, Mud";
-    } else {
-      // Then fall back to temperature logic
-      if (t === "90-100" || t === "80-90") {
+    switch (t) {
+      case "90-100":
+      case "80-90":
         hazard = "Sunburn, Dehydration, Heat Stroke, Air Quality";
-      } else if (t === "20-30") {
+        if (w === "Sunny" || w === "Partly Cloudy") {
+          newNotes = "Wear sunscreen. Regulate body temperature by staying hydrated and taking frequent breaks in air-conditioned vehicles. ";
+        } else {
+          newNotes = "Regulate body temperature by staying hydrated and taking frequent breaks in air-conditioned vehicles. ";
+        }
+
+        if (w === "Light Snow") newWeather = "Light Rain";
+        if (s === "Icy") newSurface = "Wet";
+        break;
+
+      case "20-30":
         hazard = "Wind Chill, Frostbite, Hypothermia";
-      } else if (t === "30-40") {
+        newNotes = "Regulate body temperature by taking frequent breaks inside heated vehicles. ";
+        if (w === "Light Snow" || w === "Light Rain" || s === "Wet") {
+          newSurface = "Icy";
+        }
+        break;
+
+      case "30-40":
         hazard = "Ice, Snow, Slippery Surfaces";
-      } else if (t === "40-50") {
-        hazard = "Slippery Slopes, Mud";
-      } else if (t === "50-60") {
-        hazard = "Allergens, Pollen";
-      } else if (t === "60-70" || t === "70-80") {
-        hazard = "Insects, Ticks, Snakes, Wildlife";
-      }
+        if (w === "Light Snow" || w === "Light Rain") {
+          newSurface = "Icy";
+        }
+        break;
+
+      case "40-50":
+        if (s === "Icy") {
+          hazard = "Ice, Snow, Slippery Surfaces";
+        } else {
+          hazard = "Slippery Slopes, Mud";
+        }
+        break;
+
+      case "50-60":
+        if (w === "Light Snow" || w === "Light Rain") {
+          hazard = "Slippery Slopes, Mud";
+          newSurface = "Wet";
+        } else {
+          hazard = "Allergens, Pollen";
+        }
+        break;
+
+      case "60-70":
+      case "70-80":
+        if (w === "Light Snow") newWeather = "Light Rain";
+        if (w === "Light Snow" || w === "Light Rain") {
+          hazard = "Slippery Slopes, Mud";
+          newSurface = "Wet";
+        } else {
+          hazard = "Insects, Ticks, Snakes, Wildlife";
+        }
+        break;
     }
 
     if (hazard) {
       hazSel.value = hazard;
       hazSel.dispatchEvent(new Event("change"));
+    }
+    if (newSurface) {
+      surfaceSel.value = newSurface;
+      surfaceSel.dispatchEvent(new Event("change"));
+    }
+    if (newWeather) {
+      weatherSel.value = newWeather;
+      weatherSel.dispatchEvent(new Event("change"));
+    }
+    if (newNotes) {
+      notesInput.value = newNotes;
+      notesInput.dispatchEvent(new Event("change"));
     }
   });
 }
@@ -228,18 +291,22 @@ function linkSurfaceConditionToHazards() {
     const coldTemps = ["20-30", "30-40", "40-50"];
     const warmTemps = ["40-50", "50-60", "60-70", "70-80", "80-90"];
 
-    // Ice/Snow logic for Icy or Snow Covered surfaces (cold temps up to 50)
-    if ((surface === "Icy" || surface === "Snow Covered") && coldTemps.includes(temp)) {
-      hazard = "Ice, Snow, Slippery Surfaces";
-    }
-
-    // Slippery logic for Wet surfaces
-    if (surface === "Wet") {
-      if (["20-30", "30-40"].includes(temp)) {
-        hazard = "Ice, Snow, Slippery Surfaces"; // Too cold → ice
-      } else if (warmTemps.includes(temp)) {
-        hazard = "Slippery Slopes, Mud"; // Warm enough → mud
-      }
+    switch (surface) {
+      case "Icy":
+      case "Snow Covered":
+        if (coldTemps.includes(temp)) {
+          hazard = "Ice, Snow, Slippery Surfaces";
+        }
+        break;
+      case "Wet":
+        if (["20-30", "30-40"].includes(temp)) {
+          hazard = "Ice, Snow, Slippery Surfaces";
+        } else if (warmTemps.includes(temp)) {
+          hazard = "Slippery Slopes, Mud";
+        }
+        break;
+      default:
+        break;
     }
 
     if (hazard) {
@@ -259,20 +326,52 @@ function linkContactMethodAndFrequency() {
 
   contactMethod.addEventListener("change", () => {
     const method = contactMethod.value;
-
     let defaultFrequency = "";
 
-    if (method === "Paired Work") {
-      defaultFrequency = "Continuous Contact";
-    } else if (method === "Text, Location Sharing" || method === "Group Text, Location Sharing") {
-      defaultFrequency = "Check-In Every Hour";
-    } else if (method === "Text" || method === "Group Text") {
-      defaultFrequency = "Check-In Every 30 Minutes";
+    switch (method) {
+      case "Paired Work":
+        defaultFrequency = "Continuous Contact";
+        break;
+      case "Text, Location Sharing":
+      case "Group Text, Location Sharing":
+        defaultFrequency = "Check-In Every Hour";
+        break;
+      case "Text":
+      case "Group Text":
+        defaultFrequency = "Check-In Every 30 Minutes";
+        break;
+      default:
+        defaultFrequency = ""; // Optional: fallback or leave blank
+        break;
     }
 
-    // Always update frequency based on method
     contactFrequency.value = defaultFrequency;
     contactFrequency.dispatchEvent(new Event("change"));
+  });
+}
+
+// :::: (Link Frequency & Duration) /////////////////////////////
+
+function linkFrequencyToDuration() {
+  const contactFrequency = document.getElementById("contact-frequency");
+  const duration = document.getElementById("duration");
+
+  if (!contactFrequency || !duration) return;
+
+  contactFrequency.addEventListener("change", () => {
+    const frequency = contactFrequency.value;
+    let defaultDuration = "";
+
+    switch (frequency) {
+      case "Initial and Final Check-In":
+        defaultDuration = 0.5;
+        break;
+      default:
+        return; // Exit without updating if no match
+    }
+
+    duration.value = defaultDuration;
+    duration.dispatchEvent(new Event("change"));
   });
 }
 
