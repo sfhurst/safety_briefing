@@ -60,6 +60,33 @@ input:focus {
   outline: none;
 }
 
+/* start of block */
+
+.input-div {
+  width: calc(100% - 20px);
+  padding: 8px;
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 20px;
+  font-family: inherit;
+  color: inherit;
+  min-height: 20px; /* Match single input line height */
+  line-height: 1.2;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  resize: none;
+}
+
+/* Match focus style */
+.input-div:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* end of block */
+
 .checkbox-group label {
   display: block;
   font-weight: normal;

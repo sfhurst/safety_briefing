@@ -184,6 +184,7 @@ function linkTemperatureToSeasonalHazards() {
   const weatherSel = document.getElementById("weather");
   const surfaceSel = document.getElementById("surface");
   const hazSel = document.getElementById("seasonal-hazards");
+  // const notesInput = document.getElementById("additional-notes");
   const notesInput = document.getElementById("additional-notes");
   if (!tempSel || !weatherSel || !hazSel || !surfaceSel) return;
 
@@ -267,8 +268,10 @@ function linkTemperatureToSeasonalHazards() {
       weatherSel.dispatchEvent(new Event("change"));
     }
     if (newNotes) {
-      notesInput.value = newNotes;
-      notesInput.dispatchEvent(new Event("change"));
+      // notesInput.value = newNotes;
+      // notesInput.dispatchEvent(new Event("change"));
+      notesInput.textContent = newNotes;
+      notesInput.dispatchEvent(new Event("input")); // "input" is more appropriate for editable divs
     }
   });
 }
@@ -576,8 +579,11 @@ function validateRequiredFields(button) {
 function generatePDF() {
   // Set default value for additional notes if blank
   const additionalNotes = document.getElementById("additional-notes");
-  if (additionalNotes && additionalNotes.value.trim() === "") {
-    additionalNotes.value = "No notes.";
+  // if (additionalNotes && additionalNotes.value.trim() === "") {
+  //   additionalNotes.value = "No notes.";
+  // }
+  if (additionalNotes && additionalNotes.textContent.trim() === "") {
+    additionalNotes.textContent = "No notes.";
   }
 
   // Close the iPhone keyboard if it is open
@@ -588,7 +594,8 @@ function generatePDF() {
   const clone = form.cloneNode(true); // Create a deep copy of the form
 
   // Loop through each input and select field inside the cloned form
-  const fields = clone.querySelectorAll("input, select");
+  // // const fields = clone.querySelectorAll("input, select");
+  const fields = clone.querySelectorAll("input, select, [contenteditable='true']");
   fields.forEach((field) => {
     const div = document.createElement("div"); // Create a div to hold the field's value for PDF rendering
 
@@ -612,6 +619,11 @@ function generatePDF() {
         div.textContent = parts.length === 3 ? `${parts[1]}/${parts[2]}/${parts[0]}` : ""; // Format the date as MM/DD/YYYY
       }
 
+      // NEW // Handle contenteditable divs (added case for editable divs like 'additional-notes')
+      else if (field.isContentEditable) {
+        // <-- Change here: Check for contenteditable fields
+        div.textContent = originalField.textContent.trim(); // <-- Change here: Get the text content of the contenteditable div
+      }
       // Handle other field types (inputs, textareas)
       else {
         div.textContent = originalField.value || ""; // Use the field value or an empty string if it's empty
