@@ -244,7 +244,17 @@ function linkTemperatureToSeasonalHazards() {
         break;
 
       case "60-70":
+        if (w === "Light Snow") newWeather = "Light Rain";
+        if (w === "Light Snow" || w === "Light Rain") {
+          hazard = "Slippery Slopes, Mud";
+          newSurface = "Wet";
+        } else {
+          hazard = "Insects, Ticks, Snakes, Wildlife";
+        }
+        break;
+
       case "70-80":
+        if (s === "Icy") newSurface = "Wet";
         if (w === "Light Snow") newWeather = "Light Rain";
         if (w === "Light Snow" || w === "Light Rain") {
           hazard = "Slippery Slopes, Mud";
@@ -268,9 +278,10 @@ function linkTemperatureToSeasonalHazards() {
       weatherSel.dispatchEvent(new Event("change"));
     }
     if (newNotes) {
-      // notesInput.value = newNotes;
-      // notesInput.dispatchEvent(new Event("change"));
       notesInput.textContent = newNotes;
+      notesInput.dispatchEvent(new Event("input")); // "input" is more appropriate for editable divs
+    } else {
+      notesInput.textContent = "";
       notesInput.dispatchEvent(new Event("input")); // "input" is more appropriate for editable divs
     }
   });
