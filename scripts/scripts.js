@@ -23,11 +23,19 @@ document.addEventListener("DOMContentLoaded", () => {
 // :::: (Text Shortcuts) /////////////////////////////
 
 const shortcutMap = {
-  sy: "Chris Everman, Dustin Gay, Stephen Hurst, Jessica Waggoner",
-  "sy-c": "Dustin Gay, Stephen Hurst, Jessica Waggoner",
-  "sy-d": "Chris Everman, Stephen Hurst, Jessica Waggoner",
-  "sy-j": "Chris Everman, Dustin Gay, Stephen Hurst",
-  "sy-s": "Chris Everman, Dustin Gay, Jessica Waggoner",
+  sy: "Chris Everman, Stephen Hurst, Jessica Waggoner",
+  "sy-c": "Stephen Hurst, Jessica Waggoner",
+  "sy-j": "Chris Everman, Stephen Hurst",
+  "sy-s": "Chris Everman, Jessica Waggoner",
+  SH: "Stephen Hurst",
+  JW: "Jessica Waggoner",
+  CE: "Chris Everman",
+
+  cr: "Amos Deny, Matt Ference, Melvin Hughes, Zack Hughes",
+  MF: "Matt Ference",
+  AD: "Amos Deny",
+  MH: "Melvin Hughes",
+  ZH: "Zack Hughes",
 };
 
 function monitorShortcutsForFields(fieldIds, button) {
