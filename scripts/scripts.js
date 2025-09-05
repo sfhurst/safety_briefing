@@ -27,15 +27,15 @@ const shortcutMap = {
   "sy-c": "Stephen Hurst, Jessica Waggoner",
   "sy-j": "Chris Everman, Stephen Hurst",
   "sy-s": "Chris Everman, Jessica Waggoner",
-  SH: "Stephen Hurst",
-  JW: "Jessica Waggoner",
-  CE: "Chris Everman",
+  sh: "Stephen Hurst",
+  jw: "Jessica Waggoner",
+  ce: "Chris Everman",
 
   cr: "Amos Deny, Matt Ference, Melvin Hughes, Zack Hughes",
-  MF: "Matt Ference",
-  AD: "Amos Deny",
-  MH: "Melvin Hughes",
-  ZH: "Zack Hughes",
+  mf: "Matt Ference",
+  ad: "Amos Deny",
+  mh: "Melvin Hughes",
+  zh: "Zack Hughes",
 };
 
 function monitorShortcutsForFields(fieldIds, button) {
